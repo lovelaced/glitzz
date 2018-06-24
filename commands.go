@@ -5,7 +5,8 @@ import "strings"
 type Command func(chan<- string, []string)
 
 var commandMap = map[string]Command{
-	"test": echo,
+	"test":     echo,
+	"shitpost": shitpost,
 }
 
 func run(msgs chan<- string, commandString []string) {
@@ -25,4 +26,8 @@ func run(msgs chan<- string, commandString []string) {
 func echo(msgs chan<- string, args []string) {
 	msgs <- strings.Join(args, " ")
 	return
+}
+
+func shitpost(msgs chan<- string, args []string) {
+	getBoards(msgs)
 }
