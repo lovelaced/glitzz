@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func parseMsg(msgs chan string, msg string, sep string) {
+func parseMsg(msgs chan<- string, msg string, sep string) {
 	msgSlice := strings.Split(msg, " ")
 	println(msgSlice[:])
 	prop := msgSlice[0]
