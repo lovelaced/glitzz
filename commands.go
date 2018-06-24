@@ -13,8 +13,8 @@ func run(msgs chan<- string, commandString []string) {
 	args := commandString[1:]
 	println("run")
 	commandName := commandString[0]
-	var command Command
 	command, ok := commandMap[commandName]
+
 	if ok {
 		println("ok")
 		command(msgs, args)
