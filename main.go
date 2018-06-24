@@ -1,12 +1,12 @@
 package main
 
 import (
-	"strings"
-	"github.com/thoj/go-ircevent"
 	"fmt"
+	"github.com/thoj/go-ircevent"
+	"strings"
 )
 
-func parseMsg(msgs chan string, msg string, sep string) string {
+func parseMsg(msgs chan string, msg string, sep string) {
 	msgSlice := strings.Split(msg, " ")
 	println(msgSlice[:])
 	prop := msgSlice[0]
@@ -14,13 +14,8 @@ func parseMsg(msgs chan string, msg string, sep string) string {
 	if prop[:1] == sep {
 		commandname := prop[1:]
 		println(commandname)
-		result = run(msgs, commandname)
-	//	go commandMap[commandname](msgs, msg)
-	} else {
-		result = ""
+		go run(msgs, commandname)
 	}
-	msgs <- result
-	return "uhhhh"
 }
 
 func main() {
@@ -28,7 +23,7 @@ func main() {
 	var room = "#test"
 	var separator = "."
 
-    msgs := make(chan string)
+	msgs := make(chan string)
 
 	con := irc.IRC("glitz-test", "glitz-test")
 	err := con.Connect("irc.rizon.net:6667")
@@ -36,10 +31,10 @@ func main() {
 		fmt.Println("Connection failed")
 		return
 	}
-	con.AddCallback("001", func (e *irc.Event) {
+	con.AddCallback("001", func(e *irc.Event) {
 		con.Join(room)
-		})
-	con.AddCallback("PRIVMSG", func (e *irc.Event) {
+	})
+	con.AddCallback("PRIVMSG", func(e *irc.Event) {
 		go parseMsg(msgs, e.Message(), separator)
 		message := <-msgs
 		if msgs != nil {
@@ -48,4 +43,3 @@ func main() {
 	})
 	con.Loop()
 }
-
