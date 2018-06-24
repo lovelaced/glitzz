@@ -10,11 +10,11 @@ func parseMsg(msgs chan string, msg string, sep string) {
 	msgSlice := strings.Split(msg, " ")
 	println(msgSlice[:])
 	prop := msgSlice[0]
-	var result = ""
 	if prop[:1] == sep {
-		commandname := prop[1:]
-		println(commandname)
-		go run(msgs, commandname)
+		msgSlice[0] = msgSlice[0][1:]
+		commandString := msgSlice
+		println(commandString)
+		go run(msgs, commandString)
 	}
 }
 
@@ -35,7 +35,7 @@ func main() {
 		con.Join(room)
 	})
 	con.AddCallback("PRIVMSG", func(e *irc.Event) {
-		go parseMsg(msgs, e.Message(), separator)
+		parseMsg(msgs, e.Message(), separator)
 		message := <-msgs
 		if msgs != nil {
 			con.Privmsg(room, message)
