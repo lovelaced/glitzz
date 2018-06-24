@@ -2,11 +2,6 @@ package main
 
 import "strings"
 
-//type command interface {
-//	name() string
-//	run() string
-//}
-
 type Command func(chan<- string, []string)
 
 var commandMap = map[string]Command{
@@ -16,12 +11,15 @@ var commandMap = map[string]Command{
 func run(msgs chan<- string, commandString []string) {
 	println(len(commandString))
 	args := commandString[1:]
+	println("run")
 	commandName := commandString[0]
-	if command, ok := commandMap[commandName]; ok {
+	var command Command
+	command, ok := commandMap[commandName]
+	if ok {
+		println("ok")
 		command(msgs, args)
 	}
 	return
-	//	echo(msgs, commandName)
 }
 
 func echo(msgs chan<- string, args []string) {

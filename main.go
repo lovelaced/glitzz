@@ -4,9 +4,10 @@ import (
 	"fmt"
 	"github.com/thoj/go-ircevent"
 	"strings"
+	"time"
 )
 
-func parseMsg(msgs chan string, msg string, sep string) {
+func parseMsg(msgs chan string, msg string, sep string) bool {
 	msgSlice := strings.Split(msg, " ")
 	println(msgSlice[:])
 	prop := msgSlice[0]
@@ -15,6 +16,18 @@ func parseMsg(msgs chan string, msg string, sep string) {
 		commandString := msgSlice
 		println(commandString)
 		go run(msgs, commandString)
+	}
+	return true
+}
+
+func botResponse(msgs chan string, con irc.Connection, room string) {
+	for {
+		select {
+		case message := <-msgs:
+			con.Privmsg(room, message)
+		default:
+			time.Sleep(200 * time.Millisecond)
+		}
 	}
 }
 
@@ -31,15 +44,13 @@ func main() {
 		fmt.Println("Connection failed")
 		return
 	}
+
 	con.AddCallback("001", func(e *irc.Event) {
 		con.Join(room)
 	})
 	con.AddCallback("PRIVMSG", func(e *irc.Event) {
-		parseMsg(msgs, e.Message(), separator)
-		message := <-msgs
-		if msgs != nil {
-			con.Privmsg(room, message)
-		}
+		go parseMsg(msgs, e.Message(), separator)
+		go botResponse(msgs, *con, room)
 	})
 	con.Loop()
 }
