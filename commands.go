@@ -1,24 +1,30 @@
 package main
 
+import "strings"
+
 //type command interface {
 //	name() string
 //	run() string
 //}
 
-type Command func(chan<- string, string)
+type Command func(chan<- string, []string)
 
-var commandMap = make(map[string]Command, 0)
-
-func name(name string) string {
-	return name
+var commandMap = map[string]Command{
+	"test": echo,
 }
 
-func run(msgs chan string, commandName string) string {
-	commandMap[commandName] = echo
-	echo(msgs, commandName)
+func run(msgs chan<- string, commandString []string) {
+	println(len(commandString))
+	args := commandString[1:]
+	commandName := commandString[0]
+	if command, ok := commandMap[commandName]; ok {
+		command(msgs, args)
+	}
+	return
+	//	echo(msgs, commandName)
 }
 
-func echo(msgs chan string, commandString string) {
-	//	msgs<-commandString
-	return commandString
+func echo(msgs chan<- string, args []string) {
+	msgs <- strings.Join(args, " ")
+	return
 }
