@@ -3,7 +3,9 @@ package main
 import (
 	"fmt"
 	"github.com/thoj/go-ircevent"
+	"math/rand"
 	"strings"
+	"time"
 )
 
 func parseMsg(msgs chan<- string, msg string, sep string) {
@@ -30,8 +32,9 @@ func botResponse(msgs chan string, con irc.Connection, room string) {
 }
 
 func main() {
+	rand.Seed(time.Now().Unix())
 
-	var room = "#test"
+	var room = "#botnet_test"
 	var separator = "."
 
 	msgs := make(chan string)
