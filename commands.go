@@ -3,10 +3,12 @@ package main
 import (
 	"fmt"
 	"github.com/dedeibel/go-4chan-api/api"
+	"glitzz/util"
 	html2 "golang.org/x/net/html"
 	"log"
 	"math/rand"
 	"strings"
+	"time"
 )
 
 type Command func(chan<- string, []string)
@@ -25,7 +27,7 @@ func htmlParser(html string) string {
 	var f func(*html2.Node)
 	f = func(n *html2.Node) {
 		if n.Type == html2.ElementNode && (n.Data == "br" || n.Data == "p") {
-			textBody = textBody + " "
+			textBody = textBody + "\n"
 		}
 		if n.Type != html2.ElementNode {
 			textBody = textBody + n.Data
@@ -58,8 +60,9 @@ func echo(msgs chan<- string, args []string) {
 }
 
 func shitpost(msgs chan<- string, args []string) {
+	rand.Seed(time.Now().Unix())
 	var argBoard string
-	if len(args) > 1 {
+	if len(args) > 0 {
 		argBoard = args[0]
 	} else {
 		boardList, err := api.GetBoards()
@@ -73,19 +76,39 @@ func shitpost(msgs chan<- string, args []string) {
 	threads, err := api.GetIndex(argBoard, pageNo)
 	if err != nil {
 		fmt.Printf("Error getting index of %s", argBoard)
-		msgs <- err.Error()
+		shitpost(msgs, args)
 	}
 	if len(threads) < 1 {
 		msgs <- "No threads found on board " + argBoard
+		shitpost(msgs, args)
 	}
-	posts := threads[rand.Intn(len(threads))].Posts
-
-	post := htmlParser(posts[rand.Intn(len(posts))].Comment)
+	print(threads)
+	if len(threads) < 2 {
+		msgs <- "No threads found for some reason..."
+		shitpost(msgs, args)
+	}
+	rnum := rand.Intn(len(threads) - 1)
+	text := "Got some threads: " + string(rnum)
+	println(text)
+	//	msgs <- text
+	posts := threads[rnum].Posts
+	var post string
+	post = posts[rand.Intn(len(posts)-1)].Comment
+	if len(post) > 0 {
+		post = htmlParser(post)
+		textSlice := strings.Split(post, "\n")
+		println(textSlice)
+		if len(textSlice) > 1 {
+			if strings.HasPrefix(textSlice[0], ">") && len(textSlice) > 1 {
+				textSlice[0] = util.Greentext(textSlice[0])
+				textSlice[1] = util.Normaltext(textSlice[1])
+				post = strings.Join(textSlice, " ")
+			} else {
+				post = util.Normaltext(post)
+			}
+		}
+	} else {
+		shitpost(msgs, args)
+	}
 	msgs <- post
-	//for i, c := range post {
-	//	str , err := strconv.Atoi(post[i])
-	//}
-	if err != nil {
-		msgs <- err.Error()
-	}
 }
