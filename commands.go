@@ -1,12 +1,12 @@
 package main
 
 import (
-	"fmt"
 	"github.com/dedeibel/go-4chan-api/api"
 	"glitzz/util"
 	html2 "golang.org/x/net/html"
 	"log"
 	"math/rand"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -75,24 +75,35 @@ func shitpost(msgs chan<- string, args []string) {
 	pageNo := rand.Intn(10)
 	threads, err := api.GetIndex(argBoard, pageNo)
 	if err != nil {
-		fmt.Printf("Error getting index of %s", argBoard)
+		println("Error getting index of %s", argBoard)
+		println("Error: %s", err.Error())
 		shitpost(msgs, args)
+		return
 	}
 	if len(threads) < 1 {
 		msgs <- "No threads found on board " + argBoard
 		shitpost(msgs, args)
+		return
 	}
 	print(threads)
 	if len(threads) < 2 {
 		msgs <- "No threads found for some reason..."
 		shitpost(msgs, args)
+		return
 	}
 	rnum := rand.Intn(len(threads) - 1)
-	text := "Got some threads: " + string(rnum)
+	text := "Got some threads: " + strconv.Itoa(rnum)
 	println(text)
 	//	msgs <- text
 	posts := threads[rnum].Posts
 	var post string
+	if len(posts) < 2 {
+		println("Not enough posts")
+		shitpost(msgs, args)
+		return
+	}
+	text = "Got some posts: " + strconv.Itoa(len(posts))
+	println(text)
 	post = posts[rand.Intn(len(posts)-1)].Comment
 	if len(post) > 0 {
 		post = htmlParser(post)
