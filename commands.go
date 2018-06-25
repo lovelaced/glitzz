@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 	"github.com/dedeibel/go-4chan-api/api"
-	"glitzz/strip"
-	"html"
+	html2 "golang.org/x/net/html"
+	"log"
 	"math/rand"
 	"strings"
 )
@@ -14,6 +14,28 @@ type Command func(chan<- string, []string)
 var commandMap = map[string]Command{
 	"test":     echo,
 	"shitpost": shitpost,
+}
+
+func htmlParser(html string) string {
+	doc, err := html2.Parse(strings.NewReader(html))
+	if err != nil {
+		log.Fatal(err)
+	}
+	var textBody string
+	var f func(*html2.Node)
+	f = func(n *html2.Node) {
+		if n.Type == html2.ElementNode && (n.Data == "br" || n.Data == "p") {
+			textBody = textBody + " "
+		}
+		if n.Type != html2.ElementNode {
+			textBody = textBody + n.Data
+		}
+		for c := n.FirstChild; c != nil; c = c.NextSibling {
+			f(c)
+		}
+	}
+	f(doc)
+	return textBody
 }
 
 func run(msgs chan<- string, commandString []string) {
@@ -57,7 +79,12 @@ func shitpost(msgs chan<- string, args []string) {
 		msgs <- "No threads found on board " + argBoard
 	}
 	posts := threads[rand.Intn(len(threads))].Posts
-	msgs <- strip.StripTags(html.UnescapeString(posts[rand.Intn(len(posts))].Comment))
+
+	post := htmlParser(posts[rand.Intn(len(posts))].Comment)
+	msgs <- post
+	//for i, c := range post {
+	//	str , err := strconv.Atoi(post[i])
+	//}
 	if err != nil {
 		msgs <- err.Error()
 	}
