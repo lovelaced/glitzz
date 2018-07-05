@@ -1,9 +1,9 @@
-package main
+package commands
 
 import (
 	"fmt"
-	"github.com/dedeibel/go-4chan-api/api"
-	"glitzz/util"
+	"github.com/lovelaced/glitzz/util"
+	"github.com/moshee/go-4chan-api/api"
 	html2 "golang.org/x/net/html"
 	"log"
 	"math/rand"
@@ -41,7 +41,7 @@ func htmlParser(html string) string {
 	return textBody
 }
 
-func run(msgs chan<- string, commandString []string) {
+func Run(msgs chan<- string, commandString []string) {
 	println(len(commandString))
 	args := commandString[1:]
 	println("run")
