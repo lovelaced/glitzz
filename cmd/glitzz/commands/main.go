@@ -7,7 +7,8 @@ import (
 var MainCmd = guinea.Command{
 	Run: runMain,
 	Subcommands: map[string]*guinea.Command{
-		"run": &runCmd,
+		"run":            &runCmd,
+		"default_config": &defaultConfigCmd,
 	},
 	ShortDescription: "an IRC bot",
 	Description:      "An IRC bot written in Go.",
