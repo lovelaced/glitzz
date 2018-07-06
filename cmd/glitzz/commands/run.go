@@ -4,34 +4,44 @@ import (
 	"fmt"
 	"github.com/boreq/guinea"
 	"github.com/lovelaced/glitzz/commands"
+	"github.com/lovelaced/glitzz/config"
 	"github.com/thoj/go-ircevent"
 	"strings"
 )
 
 var runCmd = guinea.Command{
-	Run:              runRun,
+	Run: runRun,
+	Arguments: []guinea.Argument{
+		guinea.Argument{
+			Name:        "config",
+			Multiple:    false,
+			Description: "Config file",
+		},
+	},
 	ShortDescription: "runs the bot",
 }
 
 func runRun(c guinea.Context) error {
-	var room = "#botnet_test"
-	var separator = "."
+	config, err := config.Load(c.Arguments[0])
+	if err != nil {
+		return err
+	}
 
 	msgs := make(chan string)
 
-	con := irc.IRC("glitz-test", "glitz-test")
-	err := con.Connect("irc.rizon.net:6667")
+	con := irc.IRC(config.Nick, config.User)
+	err = con.Connect(config.Server)
 	if err != nil {
 		fmt.Println("Connection failed")
 		return err
 	}
-	go botResponse(msgs, *con, room)
+	go botResponse(msgs, *con, config.Room)
 
 	con.AddCallback("001", func(e *irc.Event) {
-		con.Join(room)
+		con.Join(config.Room)
 	})
 	con.AddCallback("PRIVMSG", func(e *irc.Event) {
-		go parseMsg(msgs, e.Message(), separator)
+		go parseMsg(msgs, e.Message(), config.CommandPrefix)
 	})
 	con.Loop()
 	return nil
