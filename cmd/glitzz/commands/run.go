@@ -1,13 +1,15 @@
 package commands
 
 import (
-	"fmt"
 	"github.com/boreq/guinea"
-	"github.com/lovelaced/glitzz/commands"
 	"github.com/lovelaced/glitzz/config"
+	"github.com/lovelaced/glitzz/core"
+	"github.com/lovelaced/glitzz/logging"
+	"github.com/lovelaced/glitzz/modules"
 	"github.com/thoj/go-ircevent"
-	"strings"
 )
+
+var runLog = logging.GetLogger("commands/run")
 
 var runCmd = guinea.Command{
 	Run: runRun,
@@ -22,50 +24,31 @@ var runCmd = guinea.Command{
 }
 
 func runRun(c guinea.Context) error {
-	config, err := config.Load(c.Arguments[0])
+	conf, err := config.Load(c.Arguments[0])
 	if err != nil {
 		return err
 	}
 
-	msgs := make(chan string)
+	sender := core.NewSender()
+	modules := core.CreateModules(sender, conf)
 
-	con := irc.IRC(config.Nick, config.User)
-	err = con.Connect(config.Server)
-	if err != nil {
-		fmt.Println("Connection failed")
+	con := irc.IRC(conf.Nick, conf.User)
+	if err = con.Connect(conf.Server); err != nil {
 		return err
 	}
-	go botResponse(msgs, *con, config.Room)
-
 	con.AddCallback("001", func(e *irc.Event) {
-		con.Join(config.Room)
+		con.Join(conf.Room)
 	})
 	con.AddCallback("PRIVMSG", func(e *irc.Event) {
-		go parseMsg(msgs, e.Message(), config.CommandPrefix)
+		runLog.Printf("PRIVMSG received: %s", e.Message())
+		runModules(modules, e)
 	})
 	con.Loop()
 	return nil
 }
 
-func parseMsg(msgs chan<- string, msg string, sep string) {
-	msgSlice := strings.Split(msg, " ")
-	println(msgSlice[:])
-	prop := msgSlice[0]
-
-	if prop[:1] == sep {
-		msgSlice[0] = msgSlice[0][1:]
-		commandString := msgSlice
-		println(commandString)
-		commands.Run(msgs, commandString)
-	}
-	return
-}
-
-func botResponse(msgs chan string, con irc.Connection, room string) {
-	for {
-		select {
-		case message := <-msgs:
-			con.Privmsg(room, message)
-		}
+func runModules(modules []modules.Module, e *irc.Event) {
+	for _, module := range modules {
+		go module.HandleEvent(e)
 	}
 }
