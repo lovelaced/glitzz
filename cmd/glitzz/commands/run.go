@@ -4,12 +4,9 @@ import (
 	"github.com/boreq/guinea"
 	"github.com/lovelaced/glitzz/config"
 	"github.com/lovelaced/glitzz/core"
-	"github.com/lovelaced/glitzz/logging"
 	"github.com/lovelaced/glitzz/modules"
 	"github.com/thoj/go-ircevent"
 )
-
-var runLog = logging.GetLogger("commands/run")
 
 var runCmd = guinea.Command{
 	Run: runRun,
@@ -40,7 +37,6 @@ func runRun(c guinea.Context) error {
 		con.Join(conf.Room)
 	})
 	con.AddCallback("PRIVMSG", func(e *irc.Event) {
-		runLog.Printf("PRIVMSG received: %s", e.Message())
 		runModules(modules, e)
 	})
 	con.Loop()
