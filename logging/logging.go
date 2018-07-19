@@ -1,10 +1,11 @@
 package logging
 
 import (
-	"log"
-	"os"
+	"github.com/inconshreveable/log15"
 )
 
-func GetLogger(name string) *log.Logger {
-	return log.New(os.Stdout, name+": ", 0)
+type Logger = log15.Logger
+
+func New(name string) Logger {
+	return log15.New("source", name)
 }
