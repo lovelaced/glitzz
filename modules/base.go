@@ -3,6 +3,7 @@ package modules
 import (
 	"github.com/lovelaced/glitzz/config"
 	"github.com/lovelaced/glitzz/logging"
+	"github.com/lovelaced/glitzz/util"
 	"github.com/thoj/go-ircevent"
 	"log"
 )
@@ -43,8 +44,8 @@ func (b *Base) HandleEvent(e *irc.Event) {
 }
 
 func (b *Base) GetCommandName(msg string) (string, error) {
-	return GetCommandName(msg, b.Config.CommandPrefix)
+	return util.GetCommandName(msg, b.Config.CommandPrefix)
 }
 func (b *Base) GetCommandArguments(msg string) ([]string, error) {
-	return GetCommandArguments(msg, b.Config.CommandPrefix)
+	return util.GetCommandArguments(msg, b.Config.CommandPrefix)
 }

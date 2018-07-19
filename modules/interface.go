@@ -4,12 +4,8 @@ import (
 	"github.com/thoj/go-ircevent"
 )
 
-type EventHandler interface {
-	HandleEvent(event *irc.Event)
-}
-
 type Module interface {
-	EventHandler
+	HandleEvent(event *irc.Event)
 }
 
 type Sender interface {
