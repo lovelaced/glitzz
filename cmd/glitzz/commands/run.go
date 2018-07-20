@@ -32,7 +32,10 @@ func runRun(c guinea.Context) error {
 	}
 
 	sender := core.NewSender()
-	modules := core.CreateModules(sender, conf)
+	modules, err := core.CreateModules(sender, conf)
+	if err != nil {
+		return err
+	}
 
 	con := irc.IRC(conf.Nick, conf.User)
 	if err = con.Connect(conf.Server); err != nil {
