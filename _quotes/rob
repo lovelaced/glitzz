@@ -1,0 +1,14 @@
+I prefer deskside computers over laptops because they're much harder to throw in frustration when dealing with incompetent web sites.
+People get annoyed when they must write two lines of code instead of one, but I don't. It's called programming.
+Web access is very important.  Web browsers are very useful.  But if you stop there, you're missing a lot of opportunity.
+So the rule of security is the following: if you are able to work on something other than security, your system is insecure.
+Three programmers go into a bar. The sam user is there because he's finished the day's work and wants to relax. The vi user is there because he's going to be working all night and needs a break. The emacs user is there because there's nothing else he can do: both his hands are in splints because of carpal tunnel syndrome.
+Manual is wrong.
+Although there may be specific examples where generated output is uninteresting, deciding whether to read code based entirely on whether a computer or a human wrote it doesn't seem a good general principle to me.
+Where will we be ten years from now? CRT’s will be a thing of the past, multimedia will no longer be a buzzword, pen-based and voice input will be everywhere, and university students will still be editing with emacs. Pens and touchscreens are too low-bandwidth for real interaction; voice will probably also turn out to be inadequate. (Anyway, who would want to work in an environment surrounded by people talking to their computers?) Mice are sure to be with us a while longer, so we should learn how to use them well. (1991)
+Object-oriented design is the roman numerals of computing.
+Those days are dead and gone and the eulogy was delivered by Perl. 
+The major things we saw wrong with Unix when we started talking about what would become Plan 9, back around 1985, all stemmed from the appearance of a network. As a stand-alone system, Unix was pretty good. But when you networked Unix machines together, you got a network of stand-alone systems instead of a seamless, integrated networked system. Instead of one big file system, one user community, one secure setup uniting your network of machines, you had a hodgepodge of workarounds to Unix's fundamental design decision that each machine is self-sufficient. 
+The big hardware announcement today: Push hard on the camera button and the iPhone goes into selfie mode. This is the world I live in.
+I don't understand the phrase "tiny portable Linux". None of the words must have the definition I am familiar with. I must relearn.
+Ed is the standard text editor.
