@@ -1,0 +1,29 @@
+At least for the people who send me mail about a new language that they're designing, the general advice is: do it to learn about how to write a compiler.
+UNIX is basically a simple operating system, but you have to be a genius to understand the simplicity.
+When I read commentary about suggestions for where C should go, I often think back and give thanks that it wasn't developed under the advice of a worldwide crowd.
+C++ and Java, say, are presumably growing faster than plain C, but I bet C will still be around.
+Obviously, the person who had most influence on my career was Ken Thompson.
+C is peculiar in a lot of ways, but it, like many other successful things, has a certain unity of approach that stems from development in a small group.
+I can't recall any difficulty in making the C language definition completely open - any discussion on the matter tended to mention languages whose inventors tried to keep tight control, and consequent ill fate.
+The kind of programming that C provides will probably remain similar absolutely or slowly decline in usage, but relatively, JavaScript or its variants, or XML, will continue to become more central.
+C was already implemented on several quite different machines and OSs, Unix was already being distributed on the PDP-11, but the portability of the whole system was new.
+At the same time, much of it seems to have to do with recreating things we or others had already done; it seems rather derivative intellectually; is there a dearth of really new ideas?
+For infrastructure technology, C will be hard to displace.
+Any editing, software work, and mail is done in this exported Plan 9.
+One of the obvious things that went wrong with Multics as a commercial success was just that it was sort of over-engineered in a sense. There was just too much in it.
+The visible things that have come from the group have been the Plan 9 system and Inferno, but I hasten to say that the ideas and the work have come from colleagues.
+What we wanted to preserve was not just a good environment in which to do programming, but a system around which fellowship could form. We knew from experience that the essence of communal computing, as supplied by remote-access, time-shared machines, is not just to type programs into a terminal instead of a keypunch, but to encourage close communication.
+I am not now, nor have I ever been, a member of the demigodic party.
+Usenet is a strange place.
+[C has] the power of assembly language and the convenience of … assembly language.
+C is quirky, flawed, and an enormous success.
+Life's a bitch and then your feet wear down.
+Another danger is that commercial pressures of one sort or another will divert the attention of the best thinkers from real innovation to exploitation of the current fad, from prospecting to mining a known lode.
+The greatest danger to good computer science research today may be excessive relevance. Evidence for the worldwide fascination with computers is everywhere, from the articles on the financial, and even the front pages of the newspapers, to the difficulties that even the most prestigious universities experience in finding and keeping faculty in computer science. The best professors, instead of teaching bright students, join start-up companies.
+I think the Linux phenomenon is quite delightful, because it draws so strongly on the basis that Unix provided. Linux seems to be the among the healthiest of the direct Unix derivatives, though there are also the various BSD systems as well as the more official offerings from the workstation and mainframe manufacturers.
+My own computational world is a strange blend of Plan 9, Windows, and Inferno. I very much admire Linux's growth and vigor. Occasionally, people ask me much the same question [about Linux], but posed in a way that seems to expect an answer that shows jealousy or irritation about Linux vs. Unix as delivered and branded by traditional companies. Not at all; I think of both as the continuation of ideas that were started by Ken and me and many others, many years ago.
+I don’t really distinguish between Linux and things that are more or less direct descendants of Unix. I think they’re all the same at some level. Often, people ask me, "Do you feel jealous about Linux being the big thing." And the answer is no, for the same reason. I think they’re the same.
+Sometimes when you fill a vacuum, it still sucks.
+We left all that stuff out [of Unix]. If there’s an error, we have this routine called panic, and when it is called, the machine crashes, and you holler down the hall, ‘Hey, reboot it.’
+A language that doesn’t have everything is actually easier to program in than some that do.
+Unix has retarded OS research by 10 years and linux has retarded it by 20.
