@@ -8,7 +8,7 @@ import (
 
 func NewSender() modules.Sender {
 	return &sender{
-		log: logging.New("sender"),
+		log: logging.New("core/sender"),
 	}
 }
 

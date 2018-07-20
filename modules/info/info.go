@@ -3,7 +3,6 @@ package info
 import (
 	"github.com/lovelaced/glitzz/config"
 	"github.com/lovelaced/glitzz/modules"
-	"github.com/thoj/go-ircevent"
 )
 
 func New(sender modules.Sender, conf config.Config) modules.Module {
@@ -18,6 +17,6 @@ type info struct {
 	modules.Base
 }
 
-func (i *info) git(e *irc.Event) {
-	i.Sender.Reply(e, "https://github.com/lovelaced/glitzz")
+func (i *info) git(arguments []string) ([]string, error) {
+	return []string{"https://github.com/lovelaced/glitzz"}, nil
 }

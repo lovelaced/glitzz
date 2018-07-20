@@ -6,6 +6,7 @@ import (
 
 type Module interface {
 	HandleEvent(event *irc.Event)
+	RunCommand(text string) ([]string, error)
 }
 
 type Sender interface {

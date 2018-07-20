@@ -1,6 +1,7 @@
 package modules
 
 import (
+	"errors"
 	"github.com/lovelaced/glitzz/config"
 	"github.com/lovelaced/glitzz/logging"
 	"github.com/lovelaced/glitzz/util"
@@ -12,11 +13,11 @@ func NewBase(moduleName string, sender Sender, conf config.Config) Base {
 		Config:   conf,
 		Sender:   sender,
 		commands: make(map[string]Command),
-		log:      logging.New("modules/" + moduleName + "/base"),
+		log:      logging.New("modules/" + moduleName),
 	}
 }
 
-type Command func(e *irc.Event)
+type Command func(arguments []string) ([]string, error)
 
 type Base struct {
 	Config   config.Config
@@ -30,16 +31,22 @@ func (b *Base) AddCommand(name string, command Command) {
 	b.commands[name] = command
 }
 
-func (b *Base) HandleEvent(e *irc.Event) {
-	if e.Code == "PRIVMSG" {
-		if name, err := b.GetCommandName(e.Message()); err == nil {
-			command, ok := b.commands[name]
-			if ok {
+func (b *Base) RunCommand(text string) ([]string, error) {
+	if name, err := b.GetCommandName(text); err == nil {
+		command, ok := b.commands[name]
+		if ok {
+			if arguments, err := b.GetCommandArguments(text); err == nil {
 				b.log.Debug("executing command", "name", name)
-				command(e)
+				return command(arguments)
 			}
+			return nil, errors.New("Argument parsing failed")
 		}
+		return nil, errors.New("Command not found")
 	}
+	return nil, errors.New("Command parsing failed")
+}
+
+func (b *Base) HandleEvent(event *irc.Event) {
 }
 
 func (b *Base) GetCommandName(msg string) (string, error) {
