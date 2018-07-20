@@ -6,23 +6,25 @@ import (
 )
 
 type Config struct {
-	Debug         bool
-	Room          string
-	User          string
-	Nick          string
-	Server        string
-	CommandPrefix string
+	Debug           bool
+	Room            string
+	User            string
+	Nick            string
+	Server          string
+	CommandPrefix   string
+	QuotesDirectory string
 }
 
 // Default returns the default config.
 func Default() Config {
 	conf := Config{
-		Debug:         false,
-		Room:          "#test",
-		Nick:          "glitz",
-		User:          "glitz",
-		Server:        "irc.rizon.net:6667",
-		CommandPrefix: ".",
+		Debug:           false,
+		Room:            "#test",
+		Nick:            "glitz",
+		User:            "glitz",
+		Server:          "irc.rizon.net:6667",
+		CommandPrefix:   ".",
+		QuotesDirectory: "_quotes",
 	}
 	return conf
 }
