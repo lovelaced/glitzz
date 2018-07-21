@@ -12,32 +12,41 @@ func NewBase(moduleName string, sender Sender, conf config.Config) Base {
 	return Base{
 		Config:   conf,
 		Sender:   sender,
-		commands: make(map[string]Command),
+		commands: make(map[string]ModuleCommand),
 		log:      logging.New("modules/" + moduleName),
 	}
 }
 
-type Command func(arguments []string) ([]string, error)
+type CommandArguments struct {
+	Arguments []string
+	Nick      string
+}
+
+type ModuleCommand func(arguments CommandArguments) ([]string, error)
 
 type Base struct {
 	Config   config.Config
 	Sender   Sender
-	commands map[string]Command
+	commands map[string]ModuleCommand
 	log      logging.Logger
 }
 
-func (b *Base) AddCommand(name string, command Command) {
+func (b *Base) AddCommand(name string, moduleCommand ModuleCommand) {
 	b.log.Debug("adding command", "name", name)
-	b.commands[name] = command
+	b.commands[name] = moduleCommand
 }
 
-func (b *Base) RunCommand(text string) ([]string, error) {
-	if name, err := b.GetCommandName(text); err == nil {
-		command, ok := b.commands[name]
+func (b *Base) RunCommand(command Command) ([]string, error) {
+	if name, err := b.GetCommandName(command.Text); err == nil {
+		moduleCommand, ok := b.commands[name]
 		if ok {
-			if arguments, err := b.GetCommandArguments(text); err == nil {
+			if arguments, err := b.GetCommandArguments(command.Text); err == nil {
 				b.log.Debug("executing command", "name", name)
-				return command(arguments)
+				commandArguments := CommandArguments{
+					Arguments: arguments,
+					Nick:      command.Nick,
+				}
+				return moduleCommand(commandArguments)
 			}
 			return nil, errors.New("Argument parsing failed")
 		}
