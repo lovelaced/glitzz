@@ -1,11 +1,10 @@
 package quotes
 
 import (
-	"errors"
 	"github.com/lovelaced/glitzz/config"
 	"github.com/lovelaced/glitzz/modules"
+	"github.com/lovelaced/glitzz/util"
 	"io/ioutil"
-	"math/rand"
 	"os"
 	"path/filepath"
 	"strings"
@@ -28,7 +27,7 @@ type quotes struct {
 func (q *quotes) initializeQuotes(directory string) error {
 	return filepath.Walk(directory, func(path string, f os.FileInfo, err error) error {
 		if !f.IsDir() {
-			q.AddCommand(f.Name(), func(arguments []string) ([]string, error) {
+			q.AddCommand(f.Name(), func(arguments modules.CommandArguments) ([]string, error) {
 				line, err := getRandomLine(path)
 				if err != nil {
 					return nil, err
@@ -46,16 +45,9 @@ func getRandomLine(filename string) (string, error) {
 		return "", err
 	}
 	lines := strings.Split(string(content), "\n")
-	line, err := randomArrayEntry(lines)
+	line, err := util.GetRandomArrayElement(lines)
 	if err != nil {
 		return "", err
 	}
 	return strings.TrimSpace(line), nil
-}
-
-func randomArrayEntry(array []string) (string, error) {
-	if len(array) == 0 {
-		return "", errors.New("array length is zero")
-	}
-	return array[rand.Intn(len(array))], nil
 }

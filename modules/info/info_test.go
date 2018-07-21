@@ -2,6 +2,7 @@ package info
 
 import (
 	"github.com/lovelaced/glitzz/config"
+	"github.com/lovelaced/glitzz/modules"
 	"github.com/thoj/go-ircevent"
 	"strings"
 	"testing"
@@ -9,7 +10,7 @@ import (
 
 func TestGit(t *testing.T) {
 	p := New(nil, config.Default())
-	output, err := p.RunCommand(".git")
+	output, err := p.RunCommand(modules.Command{Text: ".git", Nick: "nick"})
 	if err != nil {
 		t.Errorf("error was not nil %s", err)
 	}

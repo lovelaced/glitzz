@@ -20,14 +20,14 @@ type pipes struct {
 	modules.Base
 }
 
-func (p *pipes) upper(arguments []string) ([]string, error) {
-	return []string{strings.ToUpper(strings.Join(arguments, " "))}, nil
+func (p *pipes) upper(arguments modules.CommandArguments) ([]string, error) {
+	return []string{strings.ToUpper(strings.Join(arguments.Arguments, " "))}, nil
 }
 
-func (p *pipes) lower(arguments []string) ([]string, error) {
-	return []string{strings.ToLower(strings.Join(arguments, " "))}, nil
+func (p *pipes) lower(arguments modules.CommandArguments) ([]string, error) {
+	return []string{strings.ToLower(strings.Join(arguments.Arguments, " "))}, nil
 }
 
-func (p *pipes) echo(arguments []string) ([]string, error) {
-	return []string{strings.Join(arguments, " ")}, nil
+func (p *pipes) echo(arguments modules.CommandArguments) ([]string, error) {
+	return []string{strings.Join(arguments.Arguments, " ")}, nil
 }

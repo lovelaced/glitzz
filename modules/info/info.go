@@ -21,7 +21,7 @@ type info struct {
 	modules.Base
 }
 
-func (i *info) git(arguments []string) ([]string, error) {
+func (i *info) git(arguments modules.CommandArguments) ([]string, error) {
 	return []string{repoUrl}, nil
 }
 
