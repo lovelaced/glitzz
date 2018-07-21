@@ -32,7 +32,7 @@ func runRun(c guinea.Context) error {
 	}
 
 	sender := core.NewSender()
-	modules, err := core.CreateModules(sender, conf)
+	loadedModules, err := core.CreateModules(sender, conf)
 	if err != nil {
 		return err
 	}
@@ -45,8 +45,8 @@ func runRun(c guinea.Context) error {
 		con.Join(conf.Room)
 	})
 	con.AddCallback("PRIVMSG", func(e *irc.Event) {
-		handleEvent(modules, e)
-		runCommand(modules, e, sender)
+		handleEvent(loadedModules, e)
+		runCommand(loadedModules, e, sender)
 	})
 	con.Loop()
 	return nil
@@ -58,8 +58,11 @@ func handleEvent(modules []modules.Module, e *irc.Event) {
 	}
 }
 
-func runCommand(modules []modules.Module, e *irc.Event, sender modules.Sender) {
-	output, err := createPipeOutput(modules, e.Message())
+func runCommand(loadedModules []modules.Module, e *irc.Event, sender modules.Sender) {
+	output, err := createPipeOutput(loadedModules, modules.Command{
+		Text: e.Message(),
+		Nick: e.Nick,
+	})
 	if err != nil {
 		sender.Reply(e, err.Error())
 	} else {
@@ -69,13 +72,16 @@ func runCommand(modules []modules.Module, e *irc.Event, sender modules.Sender) {
 	}
 }
 
-func createPipeOutput(modules []modules.Module, text string) ([]string, error) {
-	parts := strings.Split(text, "|")
+func createPipeOutput(loadedModules []modules.Module, command modules.Command) ([]string, error) {
+	parts := strings.Split(command.Text, "|")
 	prevOutput := make([]string, 0)
 	for _, part := range parts {
-		command := assembleCommand(part, prevOutput)
+		text := assembleCommand(part, prevOutput)
 		runLog.Debug("piping", "part", part, "command", command)
-		output, err := findModuleResponse(modules, command)
+		output, err := findModuleResponse(loadedModules, modules.Command{
+			Text: text,
+			Nick: command.Nick,
+		})
 		if (err != nil || len(output) == 0) && len(parts) > 1 {
 			return nil, errors.New("malformed pipe")
 		}
@@ -93,10 +99,10 @@ func assembleCommand(part string, prevOutput []string) string {
 	return strings.TrimSpace(command)
 }
 
-func findModuleResponse(modules []modules.Module, text string) ([]string, error) {
-	runLog.Debug("findModuleResponse executing", "text", text)
-	for _, module := range modules {
-		output, err := module.RunCommand(text)
+func findModuleResponse(loadedModules []modules.Module, command modules.Command) ([]string, error) {
+	runLog.Debug("findModuleResponse executing", "command", command)
+	for _, module := range loadedModules {
+		output, err := module.RunCommand(command)
 		if err == nil {
 			return output, nil
 		}
