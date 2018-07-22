@@ -13,7 +13,7 @@ func NewBase(moduleName string, sender Sender, conf config.Config) Base {
 		Config:   conf,
 		Sender:   sender,
 		commands: make(map[string]ModuleCommand),
-		log:      logging.New("modules/" + moduleName),
+		Log:      logging.New("modules/" + moduleName),
 	}
 }
 
@@ -28,11 +28,11 @@ type Base struct {
 	Config   config.Config
 	Sender   Sender
 	commands map[string]ModuleCommand
-	log      logging.Logger
+	Log      logging.Logger
 }
 
 func (b *Base) AddCommand(name string, moduleCommand ModuleCommand) {
-	b.log.Debug("adding command", "name", name)
+	b.Log.Debug("adding command", "name", name)
 	b.commands[name] = moduleCommand
 }
 
@@ -41,7 +41,7 @@ func (b *Base) RunCommand(command Command) ([]string, error) {
 		moduleCommand, ok := b.commands[name]
 		if ok {
 			if arguments, err := b.GetCommandArguments(command.Text); err == nil {
-				b.log.Debug("executing command", "name", name)
+				b.Log.Debug("executing command", "name", name)
 				commandArguments := CommandArguments{
 					Arguments: arguments,
 					Nick:      command.Nick,
