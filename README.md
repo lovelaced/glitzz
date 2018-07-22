@@ -1,6 +1,5 @@
-glitzz
+glitzz [![Build Status](https://travis-ci.org/lovelaced/glitzz.svg?branch=master)](https://travis-ci.org/lovelaced/glitzz)
 ===================
-
 
 **glitzz** is an IRC bot which is optimized for shitposting and the basic features any IRC channel would likely enjoy.
 
