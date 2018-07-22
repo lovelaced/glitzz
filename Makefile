@@ -1,4 +1,4 @@
-all: test build
+all: dependencies test build
 
 build:
 	mkdir -p build
@@ -26,4 +26,7 @@ bench:
 clean:
 	rm -f ./build/glitzz
 
-.PHONY: all build run doc test test-verbose test-short bench clean
+dependencies:
+	go get -t ./...
+
+.PHONY: all build run doc test test-verbose test-short bench clean dependencies
