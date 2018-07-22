@@ -32,7 +32,7 @@ func runRun(c guinea.Context) error {
 	}
 
 	sender := core.NewSender()
-	loadedModules, err := core.CreateModules(sender, conf)
+	loadedModules, err := modules.CreateModules(sender, conf)
 	if err != nil {
 		return errors.Wrap(err, "error creating modules")
 	}
@@ -52,14 +52,14 @@ func runRun(c guinea.Context) error {
 	return nil
 }
 
-func handleEvent(modules []modules.Module, e *irc.Event) {
-	for _, module := range modules {
+func handleEvent(loadedModules []core.Module, e *irc.Event) {
+	for _, module := range loadedModules {
 		go module.HandleEvent(e)
 	}
 }
 
-func runCommand(loadedModules []modules.Module, e *irc.Event, sender modules.Sender) {
-	output, err := createPipeOutput(loadedModules, modules.Command{
+func runCommand(loadedModules []core.Module, e *irc.Event, sender core.Sender) {
+	output, err := createPipeOutput(loadedModules, core.Command{
 		Text: e.Message(),
 		Nick: e.Nick,
 	})
@@ -72,13 +72,13 @@ func runCommand(loadedModules []modules.Module, e *irc.Event, sender modules.Sen
 	}
 }
 
-func createPipeOutput(loadedModules []modules.Module, command modules.Command) ([]string, error) {
+func createPipeOutput(loadedModules []core.Module, command core.Command) ([]string, error) {
 	parts := strings.Split(command.Text, "|")
 	prevOutput := make([]string, 0)
 	for _, part := range parts {
 		text := assembleCommand(part, prevOutput)
 		runLog.Debug("piping", "part", part, "command", command)
-		output, err := findModuleResponse(loadedModules, modules.Command{
+		output, err := findModuleResponse(loadedModules, core.Command{
 			Text: text,
 			Nick: command.Nick,
 		})
@@ -99,7 +99,7 @@ func assembleCommand(part string, prevOutput []string) string {
 	return strings.TrimSpace(command)
 }
 
-func findModuleResponse(loadedModules []modules.Module, command modules.Command) ([]string, error) {
+func findModuleResponse(loadedModules []core.Module, command core.Command) ([]string, error) {
 	runLog.Debug("findModuleResponse executing", "command", command)
 	for _, module := range loadedModules {
 		output, err := module.RunCommand(command)

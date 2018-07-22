@@ -3,7 +3,7 @@ package reactions
 import (
 	"errors"
 	"github.com/lovelaced/glitzz/config"
-	"github.com/lovelaced/glitzz/modules"
+	"github.com/lovelaced/glitzz/core"
 	"github.com/lovelaced/glitzz/util"
 	"strings"
 )
@@ -99,9 +99,9 @@ var stumplist = []string{
 	"The other candidates -- like {target} -- they went in, they didn't know the air conditioning didn't work. They sweated like dogs... How are they gonna beat ISIS? I don't think it's gonna happen.",
 }
 
-func New(sender modules.Sender, conf config.Config) modules.Module {
+func New(sender core.Sender, conf config.Config) core.Module {
 	rv := &reactions{
-		Base: modules.NewBase("reactions", sender, conf),
+		Base: core.NewBase("reactions", sender, conf),
 	}
 	rv.AddCommand("cute", rv.cute)
 	rv.AddCommand("magic", rv.magic)
@@ -110,10 +110,10 @@ func New(sender modules.Sender, conf config.Config) modules.Module {
 }
 
 type reactions struct {
-	modules.Base
+	core.Base
 }
 
-func (p *reactions) cute(arguments modules.CommandArguments) ([]string, error) {
+func (p *reactions) cute(arguments core.CommandArguments) ([]string, error) {
 	if len(arguments.Arguments) > 0 {
 		text, err := getRandomArrayElementAndReplacePlaceholders(cutelistTarget, arguments)
 		if err != nil {
@@ -129,7 +129,7 @@ func (p *reactions) cute(arguments modules.CommandArguments) ([]string, error) {
 	}
 }
 
-func (p *reactions) magic(arguments modules.CommandArguments) ([]string, error) {
+func (p *reactions) magic(arguments core.CommandArguments) ([]string, error) {
 	if len(arguments.Arguments) > 0 {
 		text, err := getRandomArrayElementAndReplacePlaceholders(magiclist, arguments)
 		if err != nil {
@@ -141,7 +141,7 @@ func (p *reactions) magic(arguments modules.CommandArguments) ([]string, error) 
 	}
 }
 
-func (p *reactions) stump(arguments modules.CommandArguments) ([]string, error) {
+func (p *reactions) stump(arguments core.CommandArguments) ([]string, error) {
 	if len(arguments.Arguments) > 0 {
 		text, err := getRandomArrayElementAndReplacePlaceholders(stumplist, arguments)
 		if err != nil {
@@ -153,7 +153,7 @@ func (p *reactions) stump(arguments modules.CommandArguments) ([]string, error) 
 	}
 }
 
-func getRandomArrayElementAndReplacePlaceholders(texts []string, arguments modules.CommandArguments) (string, error) {
+func getRandomArrayElementAndReplacePlaceholders(texts []string, arguments core.CommandArguments) (string, error) {
 	text, err := util.GetRandomArrayElement(texts)
 	if err != nil {
 		return "", err
