@@ -26,6 +26,9 @@ type quotes struct {
 
 func (q *quotes) initializeQuotes(directory string) error {
 	return filepath.Walk(directory, func(path string, f os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
 		if !f.IsDir() {
 			q.AddCommand(f.Name(), func(arguments modules.CommandArguments) ([]string, error) {
 				line, err := getRandomLine(path)
