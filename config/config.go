@@ -12,6 +12,8 @@ type Config struct {
 	Nick            string
 	Server          string
 	CommandPrefix   string
+	UntappdClientID string
+	UntappdClientSecret string
 	QuotesDirectory string
 }
 
@@ -24,6 +26,8 @@ func Default() Config {
 		User:            "glitz",
 		Server:          "irc.rizon.net:6667",
 		CommandPrefix:   ".",
+		UntappdClientID: "",
+		UntappdClientSecret: "",
 		QuotesDirectory: "_quotes",
 	}
 	return conf
