@@ -19,6 +19,7 @@ type Config struct {
 	CommandPrefix   string
 	Untappd         *UntappdConfig
 	QuotesDirectory string
+	TellFile        string
 }
 
 // Default returns the default config.
@@ -35,6 +36,7 @@ func Default() Config {
 			ClientSecret: "",
 		},
 		QuotesDirectory: "_quotes",
+		TellFile:        "_data/tell.json",
 	}
 	return conf
 }

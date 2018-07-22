@@ -2,11 +2,10 @@ package core
 
 import (
 	"github.com/lovelaced/glitzz/logging"
-	"github.com/lovelaced/glitzz/modules"
 	"github.com/thoj/go-ircevent"
 )
 
-func NewSender() modules.Sender {
+func NewSender() Sender {
 	return &sender{
 		log: logging.New("core/sender"),
 	}
