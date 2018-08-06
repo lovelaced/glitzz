@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/lovelaced/glitzz/config"
-	"github.com/lovelaced/glitzz/modules"
+	"github.com/lovelaced/glitzz/core"
 	"github.com/lovelaced/glitzz/util"
 	"github.com/moshee/go-4chan-api/api"
 	html2 "golang.org/x/net/html"
@@ -22,9 +22,9 @@ const numberOfRetries = 10
 // of replies can be the stickies or complete trash.
 const minNumberOfPosts = 3
 
-func New(sender modules.Sender, conf config.Config) modules.Module {
+func New(sender core.Sender, conf config.Config) core.Module {
 	rv := &fourchan{
-		Base: modules.NewBase("fourchan", sender, conf),
+		Base: core.NewBase("fourchan", sender, conf),
 	}
 	rv.AddCommand("shitpost", rv.shitpost)
 	rv.AddCommand("pic", rv.pic)
@@ -32,10 +32,10 @@ func New(sender modules.Sender, conf config.Config) modules.Module {
 }
 
 type fourchan struct {
-	modules.Base
+	core.Base
 }
 
-func (f *fourchan) shitpost(arguments modules.CommandArguments) ([]string, error) {
+func (f *fourchan) shitpost(arguments core.CommandArguments) ([]string, error) {
 	board, err := f.getBoardOrSelectRandomBoard(arguments)
 	if err != nil {
 		return nil, err
@@ -49,7 +49,7 @@ func (f *fourchan) shitpost(arguments modules.CommandArguments) ([]string, error
 	return nil, errors.New("Could not find a random post")
 }
 
-func (f *fourchan) pic(arguments modules.CommandArguments) ([]string, error) {
+func (f *fourchan) pic(arguments core.CommandArguments) ([]string, error) {
 	board, err := f.getBoardOrSelectRandomBoard(arguments)
 	if err != nil {
 		return nil, err
@@ -63,7 +63,7 @@ func (f *fourchan) pic(arguments modules.CommandArguments) ([]string, error) {
 	return nil, errors.New("Could not find a random image")
 }
 
-func (f *fourchan) getBoardOrSelectRandomBoard(arguments modules.CommandArguments) (string, error) {
+func (f *fourchan) getBoardOrSelectRandomBoard(arguments core.CommandArguments) (string, error) {
 	if len(arguments.Arguments) > 0 {
 		return arguments.Arguments[0], nil
 	} else {
