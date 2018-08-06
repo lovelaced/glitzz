@@ -2,6 +2,7 @@ package core
 
 import (
 	"github.com/lovelaced/glitzz/config"
+	"github.com/lovelaced/glitzz/logging"
 	"github.com/lovelaced/glitzz/modules"
 	"github.com/lovelaced/glitzz/modules/c3"
 	"github.com/lovelaced/glitzz/modules/fourchan"
@@ -10,6 +11,8 @@ import (
 	"github.com/lovelaced/glitzz/modules/quotes"
 	"github.com/lovelaced/glitzz/modules/untappd"
 )
+
+var log = logging.New("core")
 
 func CreateModules(sender modules.Sender, conf config.Config) ([]modules.Module, error) {
 	var rv []modules.Module
@@ -22,10 +25,14 @@ func CreateModules(sender modules.Sender, conf config.Config) ([]modules.Module,
 	} else {
 		rv = append(rv, m)
 	}
-	if m, err := untappd.New(sender, conf); err != nil {
-		return nil, err
+	if conf.Untappd != nil {
+		if m, err := untappd.New(sender, conf); err != nil {
+			return nil, err
+		} else {
+			rv = append(rv, m)
+		}
 	} else {
-		rv = append(rv, m)
+		log.Warn("Module untappd was not loaded! Missing config entry!")
 	}
 	return rv, nil
 }

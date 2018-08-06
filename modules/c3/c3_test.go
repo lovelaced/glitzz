@@ -7,13 +7,12 @@ import (
 	"time"
 )
 
-func TestGetDaysToNextCongressAndCongressNumber(t *testing.T) {
+func TestGetDaysToNextCongressAndCongressNumberBefore(t *testing.T) {
 	now := createDate(2018, time.December, 20)
 	days, number := getDaysToNextCongressAndCongressNumber(now)
 	if days != 7 {
 		t.Errorf("Days was %d", days)
 	}
-
 	if number != 35 {
 		t.Errorf("Number was %d", number)
 	}
@@ -25,7 +24,6 @@ func TestGetDaysToNextCongressAndCongressNumberAfter(t *testing.T) {
 	if days != 363 {
 		t.Errorf("Days was %d", days)
 	}
-
 	if number != 36 {
 		t.Errorf("Number was %d", number)
 	}
@@ -33,7 +31,7 @@ func TestGetDaysToNextCongressAndCongressNumberAfter(t *testing.T) {
 
 func TestC3(t *testing.T) {
 	p := New(nil, config.Default())
-	output, err := p.RunCommand(modules.Command{Text: ".c3", Nick: "nick"})
+	output, err := p.RunCommand(modules.Command{Text: ".c3"})
 	if err != nil {
 		t.Errorf("error was not nil %s", err)
 	}

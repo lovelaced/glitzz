@@ -4,6 +4,7 @@ import (
 	"github.com/lovelaced/glitzz/config"
 	"github.com/lovelaced/glitzz/modules"
 	"github.com/lovelaced/glitzz/util"
+	"github.com/pkg/errors"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -15,7 +16,7 @@ func New(sender modules.Sender, conf config.Config) (modules.Module, error) {
 		Base: modules.NewBase("quotes", sender, conf),
 	}
 	if err := rv.initializeQuotes(conf.QuotesDirectory); err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "could not read quotes")
 	}
 	return rv, nil
 }
