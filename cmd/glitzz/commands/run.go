@@ -1,12 +1,12 @@
 package commands
 
 import (
-	"errors"
 	"github.com/boreq/guinea"
 	"github.com/lovelaced/glitzz/config"
 	"github.com/lovelaced/glitzz/core"
 	"github.com/lovelaced/glitzz/logging"
 	"github.com/lovelaced/glitzz/modules"
+	"github.com/pkg/errors"
 	"github.com/thoj/go-ircevent"
 	"strings"
 )
@@ -28,18 +28,18 @@ var runCmd = guinea.Command{
 func runRun(c guinea.Context) error {
 	conf, err := config.Load(c.Arguments[0])
 	if err != nil {
-		return err
+		return errors.Wrap(err, "error loading config")
 	}
 
 	sender := core.NewSender()
 	loadedModules, err := core.CreateModules(sender, conf)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "error creating modules")
 	}
 
 	con := irc.IRC(conf.Nick, conf.User)
 	if err = con.Connect(conf.Server); err != nil {
-		return err
+		return errors.Wrap(err, "connection failed")
 	}
 	con.AddCallback("001", func(e *irc.Event) {
 		con.Join(conf.Room)

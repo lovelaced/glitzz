@@ -5,6 +5,11 @@ import (
 	"io/ioutil"
 )
 
+type UntappdConfig struct {
+	ClientID     string
+	ClientSecret string
+}
+
 type Config struct {
 	Debug           bool
 	Room            string
@@ -12,22 +17,23 @@ type Config struct {
 	Nick            string
 	Server          string
 	CommandPrefix   string
-	UntappdClientID string
-	UntappdClientSecret string
+	Untappd         *UntappdConfig
 	QuotesDirectory string
 }
 
 // Default returns the default config.
 func Default() Config {
 	conf := Config{
-		Debug:           false,
-		Room:            "#test",
-		Nick:            "glitz",
-		User:            "glitz",
-		Server:          "irc.rizon.net:6667",
-		CommandPrefix:   ".",
-		UntappdClientID: "",
-		UntappdClientSecret: "",
+		Debug:         false,
+		Room:          "#test",
+		Nick:          "glitz",
+		User:          "glitz",
+		Server:        "irc.rizon.net:6667",
+		CommandPrefix: ".",
+		Untappd: &UntappdConfig{
+			ClientID:     "",
+			ClientSecret: "",
+		},
 		QuotesDirectory: "_quotes",
 	}
 	return conf
