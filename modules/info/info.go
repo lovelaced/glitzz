@@ -3,25 +3,25 @@ package info
 import (
 	"fmt"
 	"github.com/lovelaced/glitzz/config"
-	"github.com/lovelaced/glitzz/modules"
+	"github.com/lovelaced/glitzz/core"
 	"github.com/thoj/go-ircevent"
 )
 
 const repoUrl = "https://github.com/lovelaced/glitzz"
 
-func New(sender modules.Sender, conf config.Config) modules.Module {
+func New(sender core.Sender, conf config.Config) core.Module {
 	rv := &info{
-		Base: modules.NewBase("info", sender, conf),
+		Base: core.NewBase("info", sender, conf),
 	}
 	rv.AddCommand("git", rv.git)
 	return rv
 }
 
 type info struct {
-	modules.Base
+	core.Base
 }
 
-func (i *info) git(arguments modules.CommandArguments) ([]string, error) {
+func (i *info) git(arguments core.CommandArguments) ([]string, error) {
 	return []string{repoUrl}, nil
 }
 

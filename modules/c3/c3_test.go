@@ -2,7 +2,7 @@ package c3
 
 import (
 	"github.com/lovelaced/glitzz/config"
-	"github.com/lovelaced/glitzz/modules"
+	"github.com/lovelaced/glitzz/core"
 	"testing"
 	"time"
 )
@@ -31,7 +31,7 @@ func TestGetDaysToNextCongressAndCongressNumberAfter(t *testing.T) {
 
 func TestC3(t *testing.T) {
 	p := New(nil, config.Default())
-	output, err := p.RunCommand(modules.Command{Text: ".c3"})
+	output, err := p.RunCommand(core.Command{Text: ".c3"})
 	if err != nil {
 		t.Errorf("error was not nil %s", err)
 	}

@@ -2,13 +2,13 @@ package pipes
 
 import (
 	"github.com/lovelaced/glitzz/config"
-	"github.com/lovelaced/glitzz/modules"
+	"github.com/lovelaced/glitzz/core"
 	"testing"
 )
 
 func TestUpper(t *testing.T) {
 	p := New(nil, config.Default())
-	output, err := p.RunCommand(modules.Command{Text: ".upper text TEXT text", Nick: "nick"})
+	output, err := p.RunCommand(core.Command{Text: ".upper text TEXT text", Nick: "nick"})
 	if err != nil {
 		t.Errorf("error was not nil %s", err)
 	}
@@ -22,7 +22,7 @@ func TestUpper(t *testing.T) {
 
 func TestLower(t *testing.T) {
 	p := New(nil, config.Default())
-	output, err := p.RunCommand(modules.Command{Text: ".lower text TEXT text", Nick: "nick"})
+	output, err := p.RunCommand(core.Command{Text: ".lower text TEXT text", Nick: "nick"})
 	if err != nil {
 		t.Errorf("error was not nil %s", err)
 	}
@@ -36,7 +36,7 @@ func TestLower(t *testing.T) {
 
 func TestEcho(t *testing.T) {
 	p := New(nil, config.Default())
-	output, err := p.RunCommand(modules.Command{Text: ".echo text TEXT text", Nick: "nick"})
+	output, err := p.RunCommand(core.Command{Text: ".echo text TEXT text", Nick: "nick"})
 	if err != nil {
 		t.Errorf("error was not nil %s", err)
 	}

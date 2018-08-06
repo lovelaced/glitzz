@@ -2,7 +2,7 @@ package quotes
 
 import (
 	"github.com/lovelaced/glitzz/config"
-	"github.com/lovelaced/glitzz/modules"
+	"github.com/lovelaced/glitzz/core"
 	"github.com/lovelaced/glitzz/util"
 	"github.com/pkg/errors"
 	"io/ioutil"
@@ -11,9 +11,9 @@ import (
 	"strings"
 )
 
-func New(sender modules.Sender, conf config.Config) (modules.Module, error) {
+func New(sender core.Sender, conf config.Config) (core.Module, error) {
 	rv := &quotes{
-		Base: modules.NewBase("quotes", sender, conf),
+		Base: core.NewBase("quotes", sender, conf),
 	}
 	if err := rv.initializeQuotes(conf.QuotesDirectory); err != nil {
 		return nil, errors.Wrap(err, "could not read quotes")
@@ -22,7 +22,7 @@ func New(sender modules.Sender, conf config.Config) (modules.Module, error) {
 }
 
 type quotes struct {
-	modules.Base
+	core.Base
 }
 
 func (q *quotes) initializeQuotes(directory string) error {
@@ -31,7 +31,7 @@ func (q *quotes) initializeQuotes(directory string) error {
 			return err
 		}
 		if !f.IsDir() {
-			q.AddCommand(f.Name(), func(arguments modules.CommandArguments) ([]string, error) {
+			q.AddCommand(f.Name(), func(arguments core.CommandArguments) ([]string, error) {
 				line, err := getRandomLine(path)
 				if err != nil {
 					return nil, err

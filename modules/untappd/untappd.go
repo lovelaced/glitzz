@@ -3,14 +3,14 @@ package untappd
 import (
 	"fmt"
 	"github.com/lovelaced/glitzz/config"
-	"github.com/lovelaced/glitzz/modules"
+	"github.com/lovelaced/glitzz/core"
 	untappd2 "github.com/mdlayher/untappd"
 	"github.com/pkg/errors"
 	"net/http"
 	"strings"
 )
 
-func New(sender modules.Sender, conf config.Config) (modules.Module, error) {
+func New(sender core.Sender, conf config.Config) (core.Module, error) {
 	if conf.Untappd == nil {
 		return nil, errors.New("Missing untappd config!")
 	}
@@ -22,7 +22,7 @@ func New(sender modules.Sender, conf config.Config) (modules.Module, error) {
 	}
 
 	rv := &untappd{
-		Base:   modules.NewBase("untappd", sender, conf),
+		Base:   core.NewBase("untappd", sender, conf),
 		client: utAPI,
 	}
 	rv.AddCommand("ut", rv.ut)
@@ -30,11 +30,11 @@ func New(sender modules.Sender, conf config.Config) (modules.Module, error) {
 }
 
 type untappd struct {
-	modules.Base
+	core.Base
 	client *untappd2.Client
 }
 
-func (u *untappd) ut(arguments modules.CommandArguments) ([]string, error) {
+func (u *untappd) ut(arguments core.CommandArguments) ([]string, error) {
 	beerResults, _, err := u.client.Beer.Search(strings.Join(arguments.Arguments, " "))
 	if len(beerResults) < 1 {
 		return []string{"No beers found"}, err

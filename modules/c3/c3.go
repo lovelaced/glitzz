@@ -3,7 +3,7 @@ package c3
 import (
 	"fmt"
 	"github.com/lovelaced/glitzz/config"
-	"github.com/lovelaced/glitzz/modules"
+	"github.com/lovelaced/glitzz/core"
 	"time"
 )
 
@@ -11,19 +11,19 @@ const firstCongressYear = 1984
 const congressMonth = time.December
 const congressDay = 27
 
-func New(sender modules.Sender, conf config.Config) modules.Module {
+func New(sender core.Sender, conf config.Config) core.Module {
 	rv := &c3{
-		Base: modules.NewBase("c3", sender, conf),
+		Base: core.NewBase("c3", sender, conf),
 	}
 	rv.AddCommand("c3", rv.c3)
 	return rv
 }
 
 type c3 struct {
-	modules.Base
+	core.Base
 }
 
-func (i *c3) c3(arguments modules.CommandArguments) ([]string, error) {
+func (i *c3) c3(arguments core.CommandArguments) ([]string, error) {
 	days, number := getDaysToNextCongressAndCongressNumber(time.Now())
 	text := fmt.Sprintf("Time to %dC3: %d days", number, days)
 	return []string{text}, nil
