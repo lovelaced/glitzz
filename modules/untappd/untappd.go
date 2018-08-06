@@ -5,19 +5,24 @@ import (
 	"github.com/lovelaced/glitzz/config"
 	"github.com/lovelaced/glitzz/modules"
 	untappd2 "github.com/mdlayher/untappd"
-	"strings"
+	"github.com/pkg/errors"
 	"net/http"
+	"strings"
 )
 
 func New(sender modules.Sender, conf config.Config) (modules.Module, error) {
+	if conf.Untappd == nil {
+		return nil, errors.New("Missing untappd config!")
+	}
+
 	client := http.Client{}
-	utAPI, err := untappd2.NewClient(conf.UntappdClientID, conf.UntappdClientSecret, &client)
+	utAPI, err := untappd2.NewClient(conf.Untappd.ClientID, conf.Untappd.ClientSecret, &client)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err, "creating untappd client failed")
 	}
 
 	rv := &untappd{
-		Base: modules.NewBase("untappd", sender, conf),
+		Base:   modules.NewBase("untappd", sender, conf),
 		client: utAPI,
 	}
 	rv.AddCommand("ut", rv.ut)
