@@ -36,6 +36,16 @@ func (b *Base) AddCommand(name string, moduleCommand ModuleCommand) {
 	b.commands[name] = moduleCommand
 }
 
+var argumentParsingError = errors.New("Argument parsing failed")
+var commandNotFoundError = errors.New("Command not found")
+var commandParsingError = errors.New("Command parsing failed")
+
+func IsMalformedCommandError(err error) bool {
+	return err == argumentParsingError ||
+		err == commandNotFoundError ||
+		err == commandParsingError
+}
+
 func (b *Base) RunCommand(command Command) ([]string, error) {
 	if name, err := b.GetCommandName(command.Text); err == nil {
 		moduleCommand, ok := b.commands[name]
@@ -48,11 +58,11 @@ func (b *Base) RunCommand(command Command) ([]string, error) {
 				}
 				return moduleCommand(commandArguments)
 			}
-			return nil, errors.New("Argument parsing failed")
+			return nil, argumentParsingError
 		}
-		return nil, errors.New("Command not found")
+		return nil, commandNotFoundError
 	}
-	return nil, errors.New("Command parsing failed")
+	return nil, commandParsingError
 }
 
 func (b *Base) HandleEvent(event *irc.Event) {

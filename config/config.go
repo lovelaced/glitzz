@@ -10,16 +10,25 @@ type UntappdConfig struct {
 	ClientSecret string
 }
 
-type Config struct {
-	Debug           bool
-	Room            string
-	User            string
-	Nick            string
-	Server          string
-	CommandPrefix   string
-	Untappd         *UntappdConfig
+type QuotesConfig struct {
 	QuotesDirectory string
-	TellFile        string
+}
+
+type TellConfig struct {
+	TellFile string
+}
+
+type Config struct {
+	Debug          bool
+	Room           string
+	User           string
+	Nick           string
+	Server         string
+	CommandPrefix  string
+	EnabledModules []string
+	Untappd        UntappdConfig
+	Quotes         QuotesConfig
+	Tell           TellConfig
 }
 
 // Default returns the default config.
@@ -31,19 +40,33 @@ func Default() Config {
 		User:          "glitz",
 		Server:        "irc.rizon.net:6667",
 		CommandPrefix: ".",
-		Untappd: &UntappdConfig{
+		EnabledModules: []string{
+			"c3",
+			"fourchan",
+			"info",
+			"pipes",
+			"quotes",
+			"reactions",
+			"tell",
+			"untappd",
+		},
+		Untappd: UntappdConfig{
 			ClientID:     "",
 			ClientSecret: "",
 		},
-		QuotesDirectory: "_quotes",
-		TellFile:        "_data/tell.json",
+		Quotes: QuotesConfig{
+			QuotesDirectory: "_quotes",
+		},
+		Tell: TellConfig{
+			TellFile: "_data/tell.json",
+		},
 	}
 	return conf
 }
 
 // Load loads the config from the specified json file.
 func Load(filename string) (Config, error) {
-	var config Config
+	var config Config = Default()
 	content, err := ioutil.ReadFile(filename)
 	if err != nil {
 		return config, err

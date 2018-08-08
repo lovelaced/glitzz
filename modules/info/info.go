@@ -9,12 +9,12 @@ import (
 
 const repoUrl = "https://github.com/lovelaced/glitzz"
 
-func New(sender core.Sender, conf config.Config) core.Module {
+func New(sender core.Sender, conf config.Config) (core.Module, error) {
 	rv := &info{
 		Base: core.NewBase("info", sender, conf),
 	}
 	rv.AddCommand("git", rv.git)
-	return rv
+	return rv, nil
 }
 
 type info struct {

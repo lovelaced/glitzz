@@ -22,13 +22,13 @@ const numberOfRetries = 10
 // of replies can be the stickies or complete trash.
 const minNumberOfPosts = 3
 
-func New(sender core.Sender, conf config.Config) core.Module {
+func New(sender core.Sender, conf config.Config) (core.Module, error) {
 	rv := &fourchan{
 		Base: core.NewBase("fourchan", sender, conf),
 	}
 	rv.AddCommand("shitpost", rv.shitpost)
 	rv.AddCommand("pic", rv.pic)
-	return rv
+	return rv, nil
 }
 
 type fourchan struct {
