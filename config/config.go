@@ -65,7 +65,7 @@ func Default() Config {
 
 // Load loads the config from the specified json file.
 func Load(filename string) (Config, error) {
-	var config Config
+	var config Config = Default()
 	content, err := ioutil.ReadFile(filename)
 	if err != nil {
 		return config, err
