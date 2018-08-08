@@ -48,6 +48,7 @@ func Default() Config {
 			"quotes",
 			"reactions",
 			"tell",
+			"untappd",
 		},
 		Untappd: UntappdConfig{
 			ClientID:     "",
