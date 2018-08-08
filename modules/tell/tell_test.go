@@ -27,7 +27,7 @@ func TestTell(t *testing.T) {
 	defer os.Remove(tmpDirName)
 
 	conf := config.Default()
-	conf.TellFile = filepath.Join(tmpDirName, "tell_data.json")
+	conf.Tell.TellFile = filepath.Join(tmpDirName, "tell_data.json")
 
 	sender := &senderMock{}
 

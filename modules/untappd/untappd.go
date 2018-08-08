@@ -11,10 +11,6 @@ import (
 )
 
 func New(sender core.Sender, conf config.Config) (core.Module, error) {
-	if conf.Untappd == nil {
-		return nil, errors.New("Missing untappd config!")
-	}
-
 	client := http.Client{}
 	utAPI, err := untappd2.NewClient(conf.Untappd.ClientID, conf.Untappd.ClientSecret, &client)
 	if err != nil {

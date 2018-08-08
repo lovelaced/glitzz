@@ -99,14 +99,14 @@ var stumplist = []string{
 	"The other candidates -- like {target} -- they went in, they didn't know the air conditioning didn't work. They sweated like dogs... How are they gonna beat ISIS? I don't think it's gonna happen.",
 }
 
-func New(sender core.Sender, conf config.Config) core.Module {
+func New(sender core.Sender, conf config.Config) (core.Module, error) {
 	rv := &reactions{
 		Base: core.NewBase("reactions", sender, conf),
 	}
 	rv.AddCommand("cute", rv.cute)
 	rv.AddCommand("magic", rv.magic)
 	rv.AddCommand("stump", rv.stump)
-	return rv
+	return rv, nil
 }
 
 type reactions struct {
