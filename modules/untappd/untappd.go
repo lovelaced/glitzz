@@ -11,14 +11,17 @@ import (
 )
 
 func New(sender core.Sender, conf config.Config) (core.Module, error) {
+	base := core.NewBase("untappd", sender, conf)
+	if configIsIncorrect(conf) {
+		return nil, errors.New("Invalid config, see: https://untappd.com/api/docs")
+	}
 	client := http.Client{}
 	utAPI, err := untappd2.NewClient(conf.Untappd.ClientID, conf.Untappd.ClientSecret, &client)
 	if err != nil {
 		return nil, errors.Wrap(err, "creating untappd client failed")
 	}
-
 	rv := &untappd{
-		Base:   core.NewBase("untappd", sender, conf),
+		Base:   base,
 		client: utAPI,
 	}
 	rv.AddCommand("ut", rv.ut)
@@ -51,4 +54,11 @@ func (u *untappd) ut(arguments core.CommandArguments) ([]string, error) {
 			rawInfo.ID),
 	}
 	return text, err
+}
+
+func configIsIncorrect(conf config.Config) bool {
+	return conf.Untappd.ClientID == "" ||
+		conf.Untappd.ClientSecret == "" ||
+		conf.Untappd.ClientID == config.Default().Untappd.ClientID ||
+		conf.Untappd.ClientSecret == config.Default().Untappd.ClientSecret
 }
