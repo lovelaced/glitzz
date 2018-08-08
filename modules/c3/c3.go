@@ -11,12 +11,12 @@ const firstCongressYear = 1984
 const congressMonth = time.December
 const congressDay = 27
 
-func New(sender core.Sender, conf config.Config) core.Module {
+func New(sender core.Sender, conf config.Config) (core.Module, error) {
 	rv := &c3{
 		Base: core.NewBase("c3", sender, conf),
 	}
 	rv.AddCommand("c3", rv.c3)
-	return rv
+	return rv, nil
 }
 
 type c3 struct {

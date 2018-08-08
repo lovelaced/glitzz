@@ -59,12 +59,14 @@ func handleEvent(loadedModules []core.Module, e *irc.Event) {
 }
 
 func runCommand(loadedModules []core.Module, e *irc.Event, sender core.Sender) {
-	output, err := createPipeOutput(loadedModules, core.Command{
+	command := core.Command{
 		Text: e.Message(),
 		Nick: e.Nick,
-	})
+	}
+	output, err := createPipeOutput(loadedModules, command)
 	if err != nil {
-		sender.Reply(e, err.Error())
+		runLog.Error("error executing command", "command", command, "err", err)
+		sender.Reply(e, "Internal error occured, check the logs!")
 	} else {
 		for _, line := range output {
 			sender.Reply(e, line)
@@ -82,6 +84,9 @@ func createPipeOutput(loadedModules []core.Module, command core.Command) ([]stri
 			Text: text,
 			Nick: command.Nick,
 		})
+		if err != nil && !isPippingError(err) {
+			return nil, err
+		}
 		if (err != nil || len(output) == 0) && len(parts) > 1 {
 			return nil, errors.New("malformed pipe")
 		}
@@ -99,13 +104,23 @@ func assembleCommand(part string, prevOutput []string) string {
 	return strings.TrimSpace(command)
 }
 
+func isPippingError(err error) bool {
+	return err == commandNotExecutedError || core.IsMalformedCommandError(err)
+}
+
+var commandNotExecutedError = errors.New("modules returned no response")
+
 func findModuleResponse(loadedModules []core.Module, command core.Command) ([]string, error) {
 	runLog.Debug("findModuleResponse executing", "command", command)
 	for _, module := range loadedModules {
 		output, err := module.RunCommand(command)
 		if err == nil {
 			return output, nil
+		} else {
+			if !core.IsMalformedCommandError(err) {
+				return nil, errors.Wrapf(err, "error executing command in module %T", module)
+			}
 		}
 	}
-	return nil, errors.New("modules returned no response")
+	return nil, commandNotExecutedError
 }

@@ -6,14 +6,14 @@ import (
 	"strings"
 )
 
-func New(sender core.Sender, conf config.Config) core.Module {
+func New(sender core.Sender, conf config.Config) (core.Module, error) {
 	rv := &pipes{
 		Base: core.NewBase("pipes", sender, conf),
 	}
 	rv.AddCommand("upper", rv.upper)
 	rv.AddCommand("lower", rv.lower)
 	rv.AddCommand("echo", rv.echo)
-	return rv
+	return rv, nil
 }
 
 type pipes struct {

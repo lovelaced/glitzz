@@ -111,7 +111,7 @@ func (fms *fileMessageStore) GetMessagesForNick(target string) ([]savedMessage, 
 
 func New(sender core.Sender, conf config.Config) (core.Module, error) {
 	base := core.NewBase("tell", sender, conf)
-	ms, err := newFileMessageStore(conf.TellFile, base.Log)
+	ms, err := newFileMessageStore(conf.Tell.TellFile, base.Log)
 	if err != nil {
 		return nil, err
 	}
