@@ -9,7 +9,11 @@ import (
 )
 
 func TestGit(t *testing.T) {
-	p := New(nil, config.Default())
+	p, err := New(nil, config.Default())
+	if err != nil {
+		t.Fatalf("error creating module %s", err)
+	}
+
 	output, err := p.RunCommand(core.Command{Text: ".git", Nick: "nick"})
 	if err != nil {
 		t.Errorf("error was not nil %s", err)
@@ -32,7 +36,11 @@ func (s *sender) Reply(e *irc.Event, text string) {
 
 func TestIbip(t *testing.T) {
 	s := &sender{}
-	p := New(s, config.Default())
+	p, err := New(s, config.Default())
+	if err != nil {
+		t.Fatalf("error creating module %s", err)
+	}
+
 	e := irc.Event{Arguments: []string{".bots"}, Code: "PRIVMSG"}
 	p.HandleEvent(&e)
 	if len(s.Replies) != 1 {

@@ -7,7 +7,7 @@ import (
 
 func TestNewDoesntPanic(t *testing.T) {
 	config := config.Default()
-	config.QuotesDirectory = "invalid/path"
+	config.Quotes.QuotesDirectory = "invalid/path"
 	_, err := New(nil, config)
 	if err == nil {
 		t.Error("error is nil")

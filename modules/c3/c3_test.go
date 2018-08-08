@@ -30,7 +30,11 @@ func TestGetDaysToNextCongressAndCongressNumberAfter(t *testing.T) {
 }
 
 func TestC3(t *testing.T) {
-	p := New(nil, config.Default())
+	p, err := New(nil, config.Default())
+	if err != nil {
+		t.Fatalf("error creating module %s", err)
+	}
+
 	output, err := p.RunCommand(core.Command{Text: ".c3"})
 	if err != nil {
 		t.Errorf("error was not nil %s", err)

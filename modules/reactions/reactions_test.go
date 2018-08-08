@@ -7,7 +7,11 @@ import (
 )
 
 func TestCuteNoParameters(t *testing.T) {
-	p := New(nil, config.Default())
+	p, err := New(nil, config.Default())
+	if err != nil {
+		t.Fatalf("error creating module %s", err)
+	}
+
 	output, err := p.RunCommand(core.Command{Text: ".cute", Nick: "nick"})
 	if err != nil {
 		t.Errorf("error was not nil %s", err)
@@ -18,7 +22,11 @@ func TestCuteNoParameters(t *testing.T) {
 }
 
 func TestCute(t *testing.T) {
-	p := New(nil, config.Default())
+	p, err := New(nil, config.Default())
+	if err != nil {
+		t.Fatalf("error creating module %s", err)
+	}
+
 	output, err := p.RunCommand(core.Command{Text: ".cute param1 param2", Nick: "nick"})
 	if err != nil {
 		t.Errorf("error was not nil %s", err)
@@ -29,15 +37,23 @@ func TestCute(t *testing.T) {
 }
 
 func TestMagicNoParameters(t *testing.T) {
-	p := New(nil, config.Default())
-	_, err := p.RunCommand(core.Command{Text: ".magic", Nick: "nick"})
+	p, err := New(nil, config.Default())
+	if err != nil {
+		t.Fatalf("error creating module %s", err)
+	}
+
+	_, err = p.RunCommand(core.Command{Text: ".magic", Nick: "nick"})
 	if err == nil {
 		t.Error("error was nil")
 	}
 }
 
 func TestMagic(t *testing.T) {
-	p := New(nil, config.Default())
+	p, err := New(nil, config.Default())
+	if err != nil {
+		t.Fatalf("error creating module %s", err)
+	}
+
 	output, err := p.RunCommand(core.Command{Text: ".magic param1 param2", Nick: "nick"})
 	if err != nil {
 		t.Errorf("error was not nil %s", err)
@@ -48,15 +64,23 @@ func TestMagic(t *testing.T) {
 }
 
 func TestStumpNoParameters(t *testing.T) {
-	p := New(nil, config.Default())
-	_, err := p.RunCommand(core.Command{Text: ".stump", Nick: "nick"})
+	p, err := New(nil, config.Default())
+	if err != nil {
+		t.Fatalf("error creating module %s", err)
+	}
+
+	_, err = p.RunCommand(core.Command{Text: ".stump", Nick: "nick"})
 	if err == nil {
 		t.Error("error was nil")
 	}
 }
 
 func TestStump(t *testing.T) {
-	p := New(nil, config.Default())
+	p, err := New(nil, config.Default())
+	if err != nil {
+		t.Fatalf("error creating module %s", err)
+	}
+
 	output, err := p.RunCommand(core.Command{Text: ".stump param1 param2", Nick: "nick"})
 	if err != nil {
 		t.Errorf("error was not nil %s", err)

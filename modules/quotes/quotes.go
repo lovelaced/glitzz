@@ -15,7 +15,7 @@ func New(sender core.Sender, conf config.Config) (core.Module, error) {
 	rv := &quotes{
 		Base: core.NewBase("quotes", sender, conf),
 	}
-	if err := rv.initializeQuotes(conf.QuotesDirectory); err != nil {
+	if err := rv.initializeQuotes(conf.Quotes.QuotesDirectory); err != nil {
 		return nil, errors.Wrap(err, "could not read quotes")
 	}
 	return rv, nil
