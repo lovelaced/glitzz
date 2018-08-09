@@ -42,7 +42,9 @@ func runRun(c guinea.Context) error {
 		return errors.Wrap(err, "connection failed")
 	}
 	con.AddCallback("001", func(e *irc.Event) {
-		con.Join(conf.Room)
+		for _, room := range conf.Rooms {
+			con.Join(room)
+		}
 	})
 	con.AddCallback("PRIVMSG", func(e *irc.Event) {
 		handleEvent(loadedModules, e)
