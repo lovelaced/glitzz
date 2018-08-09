@@ -19,7 +19,6 @@ type TellConfig struct {
 }
 
 type Config struct {
-	Debug          bool
 	Room           string
 	User           string
 	Nick           string
@@ -34,7 +33,6 @@ type Config struct {
 // Default returns the default config.
 func Default() Config {
 	conf := Config{
-		Debug:         false,
 		Room:          "#test",
 		Nick:          "glitz",
 		User:          "glitz",
