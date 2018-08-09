@@ -13,3 +13,13 @@ func TestNewDoesntPanic(t *testing.T) {
 		t.Error("error is nil")
 	}
 }
+
+func TestGetAllQuotes(t *testing.T) {
+	lines, err := getAllQuotes("testdata/quotes.txt")
+	if err != nil {
+		t.Fatalf("error is %s", err)
+	}
+	if len(lines) != 3 {
+		t.Errorf("returned %d lines", len(lines))
+	}
+}

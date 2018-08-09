@@ -44,14 +44,21 @@ func (q *quotes) initializeQuotes(directory string) error {
 }
 
 func getRandomLine(filename string) (string, error) {
-	content, err := ioutil.ReadFile(filename)
+	lines, err := getAllQuotes(filename)
 	if err != nil {
 		return "", err
 	}
-	lines := strings.Split(string(content), "\n")
 	line, err := util.GetRandomArrayElement(lines)
 	if err != nil {
 		return "", err
 	}
 	return strings.TrimSpace(line), nil
+}
+
+func getAllQuotes(filename string) ([]string, error) {
+	content, err := ioutil.ReadFile(filename)
+	if err != nil {
+		return nil, err
+	}
+	return strings.Split(strings.TrimRight(string(content), "\n"), "\n"), nil
 }
