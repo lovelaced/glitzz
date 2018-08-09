@@ -19,7 +19,7 @@ type TellConfig struct {
 }
 
 type Config struct {
-	Room           string
+	Rooms          []string
 	User           string
 	Nick           string
 	Server         string
@@ -33,7 +33,7 @@ type Config struct {
 // Default returns the default config.
 func Default() Config {
 	conf := Config{
-		Room:          "#test",
+		Rooms:         []string{"#test"},
 		Nick:          "glitz",
 		User:          "glitz",
 		Server:        "irc.rizon.net:6667",
