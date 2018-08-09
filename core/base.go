@@ -20,6 +20,7 @@ func NewBase(moduleName string, sender Sender, conf config.Config) Base {
 type CommandArguments struct {
 	Arguments []string
 	Nick      string
+	Target    string
 }
 
 type ModuleCommand func(arguments CommandArguments) ([]string, error)
@@ -55,6 +56,7 @@ func (b *Base) RunCommand(command Command) ([]string, error) {
 				commandArguments := CommandArguments{
 					Arguments: arguments,
 					Nick:      command.Nick,
+					Target:    command.Target,
 				}
 				return moduleCommand(commandArguments)
 			}
