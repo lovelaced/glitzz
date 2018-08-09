@@ -62,8 +62,9 @@ func handleEvent(loadedModules []core.Module, e *irc.Event) {
 
 func runCommand(loadedModules []core.Module, e *irc.Event, sender core.Sender) {
 	command := core.Command{
-		Text: e.Message(),
-		Nick: e.Nick,
+		Text:   e.Message(),
+		Nick:   e.Nick,
+		Target: e.Arguments[0],
 	}
 	output, err := createPipeOutput(loadedModules, command)
 	if err != nil {
@@ -83,8 +84,9 @@ func createPipeOutput(loadedModules []core.Module, command core.Command) ([]stri
 		text := assembleCommand(part, prevOutput)
 		runLog.Debug("piping", "part", part, "command", command)
 		output, err := findModuleResponse(loadedModules, core.Command{
-			Text: text,
-			Nick: command.Nick,
+			Text:   text,
+			Nick:   command.Nick,
+			Target: command.Target,
 		})
 		if err != nil && !isPippingError(err) {
 			return nil, err
