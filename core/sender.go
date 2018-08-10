@@ -1,8 +1,8 @@
 package core
 
 import (
-	ircutil "github.com/lovelaced/glitzz/irc"
 	"github.com/lovelaced/glitzz/logging"
+	"github.com/lovelaced/glitzz/util"
 	"github.com/thoj/go-ircevent"
 	"time"
 )
@@ -45,7 +45,7 @@ func (s *sender) Reply(e *irc.Event, text string) {
 }
 
 func selectReplyTarget(e *irc.Event) string {
-	if ircutil.IsChannelName(e.Arguments[0]) {
+	if util.IsChannelName(e.Arguments[0]) {
 		return e.Arguments[0]
 	} else {
 		return e.Nick
