@@ -11,6 +11,10 @@ type Command struct {
 
 	// Nick of the person that sent this command for example "nick".
 	Nick string
+
+	// Target of the message. A channel name or a nick if the bot is
+	// messaged directly. Example: "#channel" or "bot_nick".
+	Target string
 }
 
 type Module interface {

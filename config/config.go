@@ -18,6 +18,10 @@ type TellConfig struct {
 	TellFile string
 }
 
+type SeenConfig struct {
+	SeenFile string
+}
+
 type Config struct {
 	Rooms          []string
 	User           string
@@ -28,6 +32,7 @@ type Config struct {
 	Untappd        UntappdConfig
 	Quotes         QuotesConfig
 	Tell           TellConfig
+	Seen           SeenConfig
 }
 
 // Default returns the default config.
@@ -45,6 +50,7 @@ func Default() Config {
 			"pipes",
 			"quotes",
 			"reactions",
+			"seen",
 			"tell",
 			"untappd",
 		},
@@ -57,6 +63,9 @@ func Default() Config {
 		},
 		Tell: TellConfig{
 			TellFile: "_data/tell.json",
+		},
+		Seen: SeenConfig{
+			SeenFile: "_data/seen.json",
 		},
 	}
 	return conf
