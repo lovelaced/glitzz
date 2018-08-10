@@ -55,6 +55,7 @@ func Default() Config {
 			"seen",
 			"tell",
 			"untappd",
+			"vatsim",
 		},
 		Untappd: UntappdConfig{
 			ClientID:     "",
