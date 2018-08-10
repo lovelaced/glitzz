@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"github.com/lovelaced/glitzz/config"
 	"github.com/lovelaced/glitzz/core"
-	ircutils "github.com/lovelaced/glitzz/irc"
 	"github.com/lovelaced/glitzz/logging"
+	"github.com/lovelaced/glitzz/util"
 	"github.com/thoj/go-ircevent"
 	"io/ioutil"
 	"os"
@@ -127,7 +127,7 @@ func (s *seen) seen(arguments core.CommandArguments) ([]string, error) {
 	if len(arguments.Arguments) == 1 {
 		target := arguments.Target
 		nick := arguments.Arguments[0]
-		if ircutils.IsChannelName(target) {
+		if util.IsChannelName(target) {
 			date, err := s.ms.Get(nick, target)
 			if err != nil {
 				s.Log.Error("could not retrieve data", "err", err)
@@ -148,7 +148,7 @@ func (s *seen) seen(arguments core.CommandArguments) ([]string, error) {
 func (s *seen) HandleEvent(event *irc.Event) {
 	if event.Code == "PRIVMSG" {
 		target := event.Arguments[0]
-		if ircutils.IsChannelName(target) {
+		if util.IsChannelName(target) {
 			if err := s.ms.Save(event.Nick, target, time.Now().UTC()); err != nil {
 				s.Log.Error("could not record a message", "err", err)
 			}
