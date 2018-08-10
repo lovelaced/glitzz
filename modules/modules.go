@@ -14,6 +14,7 @@ import (
 	"github.com/lovelaced/glitzz/modules/seen"
 	"github.com/lovelaced/glitzz/modules/tell"
 	"github.com/lovelaced/glitzz/modules/untappd"
+	"github.com/lovelaced/glitzz/modules/vatsim"
 	"github.com/pkg/errors"
 )
 
@@ -54,6 +55,7 @@ func getModuleConstructors() map[string]moduleConstructor {
 		"seen":      seen.New,
 		"tell":      tell.New,
 		"untappd":   untappd.New,
+		"vatsim":    vatsim.New,
 	}
 	return modules
 }
