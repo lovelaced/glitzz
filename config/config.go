@@ -27,6 +27,7 @@ type Config struct {
 	User           string
 	Nick           string
 	Server         string
+	TLS            bool
 	CommandPrefix  string
 	EnabledModules []string
 	Untappd        UntappdConfig
@@ -41,7 +42,8 @@ func Default() Config {
 		Rooms:         []string{"#test"},
 		Nick:          "glitz",
 		User:          "glitz",
-		Server:        "irc.rizon.net:6667",
+		Server:        "irc.rizon.net:6697",
+		TLS:           true,
 		CommandPrefix: ".",
 		EnabledModules: []string{
 			"c3",
