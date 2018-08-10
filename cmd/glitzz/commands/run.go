@@ -8,6 +8,7 @@ import (
 	"github.com/lovelaced/glitzz/modules"
 	"github.com/pkg/errors"
 	"github.com/thoj/go-ircevent"
+	"strconv"
 	"strings"
 )
 
@@ -49,6 +50,14 @@ func runRun(c guinea.Context) error {
 	con.AddCallback("PRIVMSG", func(e *irc.Event) {
 		handleEvent(loadedModules, e)
 		runCommand(loadedModules, e, sender)
+	})
+	con.AddCallback("*", func(e *irc.Event) {
+		code, err := strconv.Atoi(e.Code)
+		if err == nil {
+			if code >= 400 {
+				runLog.Error("server returned an error", "raw", e.Raw)
+			}
+		}
 	})
 	con.Loop()
 	return nil
