@@ -8,6 +8,7 @@ import (
 	"github.com/lovelaced/glitzz/modules/c3"
 	"github.com/lovelaced/glitzz/modules/fourchan"
 	"github.com/lovelaced/glitzz/modules/info"
+	"github.com/lovelaced/glitzz/modules/links"
 	"github.com/lovelaced/glitzz/modules/pipes"
 	"github.com/lovelaced/glitzz/modules/quotes"
 	"github.com/lovelaced/glitzz/modules/reactions"
@@ -50,6 +51,7 @@ func getModuleConstructors() map[string]moduleConstructor {
 		"c3":        c3.New,
 		"fourchan":  fourchan.New,
 		"info":      info.New,
+		"links":     links.New,
 		"pipes":     pipes.New,
 		"quotes":    quotes.New,
 		"reactions": reactions.New,
