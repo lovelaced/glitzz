@@ -25,13 +25,10 @@ test-verbose:
 test-short:
 	go test -short ./...
 
-bench:
-	go test -v -run=XXX -bench=. ./...
-
 clean:
 	rm -f ./build/glitzz
 
 dependencies:
 	go get -t ./...
 
-.PHONY: all build run doc test test-verbose test-short bench clean dependencies
+.PHONY: all build run doc test test-verbose test-short clean dependencies
