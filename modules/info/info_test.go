@@ -34,6 +34,10 @@ func (s *sender) Reply(e *irc.Event, text string) {
 	s.Replies = append(s.Replies, text)
 }
 
+func (s *sender) Message(target string, text string) {
+	s.Replies = append(s.Replies, text)
+}
+
 func TestIbip(t *testing.T) {
 	s := &sender{}
 	p, err := New(s, config.Default())

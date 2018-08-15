@@ -22,6 +22,10 @@ type SeenConfig struct {
 	SeenFile string
 }
 
+type RemindersConfig struct {
+	RemindersFile string
+}
+
 type Config struct {
 	Rooms          []string
 	User           string
@@ -34,6 +38,7 @@ type Config struct {
 	Quotes         QuotesConfig
 	Tell           TellConfig
 	Seen           SeenConfig
+	Reminders      RemindersConfig
 }
 
 // Default returns the default config.
@@ -52,6 +57,7 @@ func Default() Config {
 			"pipes",
 			"quotes",
 			"reactions",
+			"reminders",
 			"seen",
 			"tell",
 			"untappd",
@@ -69,6 +75,9 @@ func Default() Config {
 		},
 		Seen: SeenConfig{
 			SeenFile: "_data/seen.json",
+		},
+		Reminders: RemindersConfig{
+			RemindersFile: "_data/reminders.json",
 		},
 	}
 	return conf
