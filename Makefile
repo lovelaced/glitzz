@@ -31,4 +31,4 @@ clean:
 dependencies:
 	go get -t ./...
 
-.PHONY: all build run doc test test-verbose test-short clean dependencies
+.PHONY: all ci build run doc test test-ci test-verbose test-short clean dependencies
