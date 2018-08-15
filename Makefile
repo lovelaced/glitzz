@@ -1,5 +1,7 @@
 all: dependencies test build
 
+ci: dependencies test-ci build
+
 build:
 	mkdir -p build
 	go build -o ./build/glitzz ./cmd/glitzz
@@ -14,14 +16,14 @@ doc:
 test:
 	go test ./...
 
+test-ci:
+	go test -coverprofile=coverage.txt -covermode=atomic ./...
+
 test-verbose:
 	go test -v ./...
 
 test-short:
 	go test -short ./...
-
-bench:
-	go test -v -run=XXX -bench=. ./...
 
 clean:
 	rm -f ./build/glitzz
@@ -29,4 +31,4 @@ clean:
 dependencies:
 	go get -t ./...
 
-.PHONY: all build run doc test test-verbose test-short bench clean dependencies
+.PHONY: all ci build run doc test test-ci test-verbose test-short clean dependencies
