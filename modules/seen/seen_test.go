@@ -11,18 +11,6 @@ import (
 	"testing"
 )
 
-type senderMock struct {
-	Replies []string
-}
-
-func (s *senderMock) Reply(e *irc.Event, text string) {
-	s.Replies = append(s.Replies, text)
-}
-
-func (s *senderMock) Message(target string, text string) {
-	s.Replies = append(s.Replies, text)
-}
-
 func TestSeenNotFound(t *testing.T) {
 	// setup
 	tmpDirName, err := ioutil.TempDir("", "test")
@@ -34,9 +22,7 @@ func TestSeenNotFound(t *testing.T) {
 	conf := config.Default()
 	conf.Seen.SeenFile = filepath.Join(tmpDirName, "seen_data.json")
 
-	sender := &senderMock{}
-
-	m, err := New(sender, conf)
+	m, err := New(nil, conf)
 	if err != nil {
 		t.Fatalf("Could not create a module: %s", err)
 	}
@@ -65,9 +51,7 @@ func TestSeenFound(t *testing.T) {
 	conf := config.Default()
 	conf.Seen.SeenFile = filepath.Join(tmpDirName, "seen_data.json")
 
-	sender := &senderMock{}
-
-	m, err := New(sender, conf)
+	m, err := New(nil, conf)
 	if err != nil {
 		t.Fatalf("Could not create a module: %s", err)
 	}
