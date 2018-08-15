@@ -45,7 +45,7 @@ func (s *sender) Message(target string, text string) {
 }
 
 func (s *sender) Reply(e *irc.Event, text string) {
-	target := selectReplyTarget(e)
+	target := util.SelectReplyTarget(e)
 	s.queueMessage(target, text)
 }
 
@@ -54,13 +54,5 @@ func (s *sender) queueMessage(target string, text string) {
 	s.outgoingMessages <- outgoingMessage{
 		target: target,
 		text:   text,
-	}
-}
-
-func selectReplyTarget(e *irc.Event) string {
-	if util.IsChannelName(e.Arguments[0]) {
-		return e.Arguments[0]
-	} else {
-		return e.Nick
 	}
 }
