@@ -5,24 +5,25 @@ import (
 	"strings"
 )
 
-func parseCommand(msg string, sep string) (string, []string, error) {
-	if strings.HasPrefix(msg, sep) {
-		msg = strings.TrimPrefix(msg, sep)
+func parseCommand(msg string, prefix string) (string, []string, error) {
+	if strings.HasPrefix(msg, prefix) {
+		msg = strings.TrimPrefix(msg, prefix)
 		fields := strings.Fields(msg)
 		if len(fields) > 0 {
 			return fields[0], fields[1:], nil
 		}
-
 	}
 	return "", nil, errors.New("this message is not a command")
 }
 
-func GetCommandName(msg string, sep string) (string, error) {
-	name, _, err := parseCommand(msg, sep)
+// GetCommandName extracts the command name from the command string.
+func GetCommandName(msg string, prefix string) (string, error) {
+	name, _, err := parseCommand(msg, prefix)
 	return name, err
 }
 
-func GetCommandArguments(msg string, sep string) ([]string, error) {
-	_, arguments, err := parseCommand(msg, sep)
+// GetCommandArguments extracts the command arguments from the command string.
+func GetCommandArguments(msg string, prefix string) ([]string, error) {
+	_, arguments, err := parseCommand(msg, prefix)
 	return arguments, err
 }
