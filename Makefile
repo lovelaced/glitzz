@@ -1,5 +1,7 @@
 all: dependencies test build
 
+ci: dependencies test-ci build
+
 build:
 	mkdir -p build
 	go build -o ./build/glitzz ./cmd/glitzz
@@ -13,6 +15,9 @@ doc:
 
 test:
 	go test ./...
+
+test-ci:
+	go test -coverprofile=coverage.txt -covermode=atomic ./...
 
 test-verbose:
 	go test -v ./...
