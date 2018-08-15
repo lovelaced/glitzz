@@ -3,24 +3,13 @@ package tell
 import (
 	"github.com/lovelaced/glitzz/config"
 	"github.com/lovelaced/glitzz/core"
+	"github.com/lovelaced/glitzz/tests"
 	"github.com/thoj/go-ircevent"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"testing"
 )
-
-type senderMock struct {
-	Replies []string
-}
-
-func (s *senderMock) Reply(e *irc.Event, text string) {
-	s.Replies = append(s.Replies, text)
-}
-
-func (s *senderMock) Message(target string, text string) {
-	s.Replies = append(s.Replies, text)
-}
 
 func TestTell(t *testing.T) {
 	// setup
@@ -33,7 +22,7 @@ func TestTell(t *testing.T) {
 	conf := config.Default()
 	conf.Tell.TellFile = filepath.Join(tmpDirName, "tell_data.json")
 
-	sender := &senderMock{}
+	sender := &tests.SenderMock{}
 
 	m, err := New(sender, conf)
 	if err != nil {
