@@ -18,6 +18,10 @@ func (s *senderMock) Reply(e *irc.Event, text string) {
 	s.Replies = append(s.Replies, text)
 }
 
+func (s *senderMock) Message(target string, text string) {
+	s.Replies = append(s.Replies, text)
+}
+
 func TestTell(t *testing.T) {
 	// setup
 	tmpDirName, err := ioutil.TempDir("", "test")
