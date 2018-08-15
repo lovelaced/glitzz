@@ -25,4 +25,5 @@ type Module interface {
 
 type Sender interface {
 	Reply(e *irc.Event, text string)
+	Message(target string, text string)
 }
