@@ -32,17 +32,18 @@ func runRun(c guinea.Context) error {
 		return errors.Wrap(err, "error loading config")
 	}
 
-	sender := core.NewSender()
-	loadedModules, err := modules.CreateModules(sender, conf)
-	if err != nil {
-		return errors.Wrap(err, "error creating modules")
-	}
-
 	con := irc.IRC(conf.Nick, conf.User)
 	con.UseTLS = conf.TLS
 	if err = con.Connect(conf.Server); err != nil {
 		return errors.Wrap(err, "connection failed")
 	}
+
+	sender := core.NewSender(con)
+	loadedModules, err := modules.CreateModules(sender, conf)
+	if err != nil {
+		return errors.Wrap(err, "error creating modules")
+	}
+
 	con.AddCallback("001", func(e *irc.Event) {
 		for _, room := range conf.Rooms {
 			con.Join(room)
