@@ -1,6 +1,7 @@
 package modules
 
 import (
+	"github.com/lovelaced/glitzz/config"
 	"testing"
 )
 
@@ -19,5 +20,12 @@ func TestGetModuleConstructorsShouldNotContainNulls(t *testing.T) {
 		if value == nil {
 			t.Errorf("nil value for key %s", key)
 		}
+	}
+}
+
+func TestCreateModulesModuleDoesNotExist(t *testing.T) {
+	_, err := CreateModules(nil, config.Config{EnabledModules: []string{"invalid_module"}})
+	if err == nil {
+		t.Fatal("err was nil")
 	}
 }

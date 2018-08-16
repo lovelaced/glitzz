@@ -54,6 +54,7 @@ func Default() Config {
 			"c3",
 			"fourchan",
 			"info",
+			"links",
 			"pipes",
 			"quotes",
 			"reactions",
