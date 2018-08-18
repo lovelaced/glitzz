@@ -61,7 +61,6 @@ func Default() Config {
 			"reminders",
 			"seen",
 			"tell",
-			"untappd",
 			"vatsim",
 		},
 		Untappd: UntappdConfig{
