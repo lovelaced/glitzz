@@ -55,6 +55,7 @@ func (f *fourchan) pic(arguments core.CommandArguments) ([]string, error) {
 		return nil, err
 	}
 	for i := 0; i < numberOfRetries; i++ {
+		board = strings.Replace(board, "/", "", -1)
 		url, err := f.getRandomImage(board)
 		if err == nil {
 			return []string{url}, nil

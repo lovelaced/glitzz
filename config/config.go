@@ -26,6 +26,10 @@ type RemindersConfig struct {
 	RemindersFile string
 }
 
+type TvConfig struct {
+	ApiKey string
+}
+
 type Config struct {
 	Rooms          []string
 	User           string
@@ -39,6 +43,7 @@ type Config struct {
 	Tell           TellConfig
 	Seen           SeenConfig
 	Reminders      RemindersConfig
+	Tv             TvConfig
 }
 
 // Default returns the default config.
@@ -78,6 +83,9 @@ func Default() Config {
 		},
 		Reminders: RemindersConfig{
 			RemindersFile: "_data/reminders.json",
+		},
+		Tv: TvConfig{
+			ApiKey: "",
 		},
 	}
 	return conf
