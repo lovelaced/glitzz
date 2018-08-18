@@ -6,6 +6,7 @@ import (
 	"github.com/lovelaced/glitzz/core"
 	"github.com/lovelaced/glitzz/logging"
 	"github.com/lovelaced/glitzz/modules/c3"
+	"github.com/lovelaced/glitzz/modules/decide"
 	"github.com/lovelaced/glitzz/modules/fourchan"
 	"github.com/lovelaced/glitzz/modules/info"
 	"github.com/lovelaced/glitzz/modules/links"
@@ -49,6 +50,7 @@ func createModules(moduleConstructors map[string]moduleConstructor, moduleNames 
 func getModuleConstructors() map[string]moduleConstructor {
 	modules := map[string]moduleConstructor{
 		"c3":        c3.New,
+		"decide":    decide.New,
 		"fourchan":  fourchan.New,
 		"info":      info.New,
 		"links":     links.New,
