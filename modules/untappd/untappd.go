@@ -2,12 +2,14 @@ package untappd
 
 import (
 	"fmt"
+	"net/http"
+	"strings"
+	"time"
+
 	"github.com/lovelaced/glitzz/config"
 	"github.com/lovelaced/glitzz/core"
 	untappd2 "github.com/mdlayher/untappd"
 	"github.com/pkg/errors"
-	"net/http"
-	"strings"
 )
 
 func New(sender core.Sender, conf config.Config) (core.Module, error) {
@@ -15,7 +17,7 @@ func New(sender core.Sender, conf config.Config) (core.Module, error) {
 	if configIsIncorrect(conf) {
 		return nil, errors.New("Invalid config, see: https://untappd.com/api/docs")
 	}
-	client := http.Client{}
+	client := http.Client{Timeout: 20 * time.Second}
 	utAPI, err := untappd2.NewClient(conf.Untappd.ClientID, conf.Untappd.ClientSecret, &client)
 	if err != nil {
 		return nil, errors.Wrap(err, "creating untappd client failed")
