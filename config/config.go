@@ -58,6 +58,7 @@ func Default() Config {
 		EnabledModules: []string{
 			"c3",
 			"decide",
+			"degeneracy",
 			"fourchan",
 			"info",
 			"links",
