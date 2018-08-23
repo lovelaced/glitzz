@@ -6,6 +6,7 @@ import (
 	"github.com/lovelaced/glitzz/core"
 	"github.com/lovelaced/glitzz/util"
 	"strings"
+	"unicode"
 )
 
 var cutelist = []string{
@@ -71,7 +72,6 @@ var magiclist = []string{
 }
 
 var stumplist = []string{
-	"I'm the best meme for america. Kek says so. Top person. VERY high energy. Would god king kek lie about such a thing? Of course not.",
 	"I don't even want to talk about {target}. Just look at his numbers. He's a very low-energy person.",
 	"People come to me and tell me, they say, \"Donald, we like you, but there's something weird about {target}.\" It's a very serious problem.",
 	"We have incompetent people, they are destroying this country, and {target} doesn't have what we need to make it great again.",
@@ -99,6 +99,72 @@ var stumplist = []string{
 	"The other candidates -- like {target} -- they went in, they didn't know the air conditioning didn't work. They sweated like dogs... How are they gonna beat ISIS? I don't think it's gonna happen.",
 }
 
+// the order in which spurdReplacements are defined is relevant to the way the
+// replacement is performed, do not reorganize them.
+var spurdReplacements = [][]string{
+	{"epic", "ebin"},
+	{"penis", "benis"},
+	{"wh", "w"},
+	{"th", "d"},
+	{"af", "ab"},
+	{"ap", "ab"},
+	{"ca", "ga"},
+	{"ck", "gg"},
+	{"co", "go"},
+	{"ev", "eb"},
+	{"ex", "egz"},
+	{"et", "ed"},
+	{"iv", "ib"},
+	{"it", "id"},
+	{"ke", "ge"},
+	{"op", "ob"},
+	{"ot", "od"},
+	{"po", "bo"},
+	{"pe", "be"},
+	{"pi", "bi"},
+	{"up", "ub"},
+	{"va", "ba"},
+	{"cr", "gr"},
+	{"kn", "gn"},
+	{"lt", "ld"},
+	{"mm", "m"},
+	{"nt", "dn"},
+	{"pr", "br"},
+	{"tr", "dr"},
+	{"bs", "bz"},
+	{"ds", "dz"},
+	{"fs", "fz"},
+	{"gs", "gz"},
+	{"is", "iz"},
+	{"ls", "lz"},
+	{"ms", "mz"},
+	{"ns", "nz"},
+	{"rs", "rz"},
+	{"ss", "sz"},
+	{"ts", "tz"},
+	{"us", "uz"},
+	{"ws", "wz"},
+	{"ys", "yz"},
+	{"alk", "olk"},
+	{"ing", "ign"},
+	{"ic", "ig"},
+	{"ng", "nk"},
+	{"kek", "geg"},
+	{"some", "sum"},
+	{"meme", "maymay"},
+}
+
+var spurdFaces = []string{
+	":D",
+	":DD",
+	":DDD",
+	":-D",
+	"XD",
+	"XXD",
+	"XDD",
+	"XXDD",
+}
+
 func New(sender core.Sender, conf config.Config) (core.Module, error) {
 	rv := &reactions{
 		Base: core.NewBase("reactions", sender, conf),
@@ -106,6 +172,7 @@ func New(sender core.Sender, conf config.Config) (core.Module, error) {
 	rv.AddCommand("cute", rv.cute)
 	rv.AddCommand("magic", rv.magic)
 	rv.AddCommand("stump", rv.stump)
+	rv.AddCommand("spurd", rv.spurd)
 	return rv, nil
 }
 
@@ -151,6 +218,79 @@ func (p *reactions) stump(arguments core.CommandArguments) ([]string, error) {
 	} else {
 		return nil, errors.New("no arguments given")
 	}
+}
+
+func (p *reactions) spurd(arguments core.CommandArguments) ([]string, error) {
+	if len(arguments.Arguments) > 0 {
+		text := strings.Join(arguments.Arguments, " ")
+		text = spurdReplace(text)
+		face, err := util.GetRandomArrayElement(spurdFaces)
+		if err != nil {
+			return nil, err
+		}
+		return []string{text + " " + face}, nil
+	}
+	return nil, nil
+}
+
+func spurdReplace(s string) string {
+	for _, replacement := range spurdReplacements {
+		s = replaceAndPreserveCase(s, replacement[0], replacement[1])
+	}
+	return s
+}
+
+func replaceAndPreserveCase(s, old, new string) string {
+	for {
+		i := strings.Index(strings.ToLower(s), strings.ToLower(old))
+		if i < 0 {
+			return s
+		}
+		pre := s[:i]
+		post := s[i+len(old):]
+		middle := s[i : i+len(old)]
+
+		b := &strings.Builder{}
+		b.WriteString(pre)
+
+		// This code makes sure that this function is UTF-8 compatibile
+		// by comparing actual UTF-8 code points aka runes instead of
+		// bytes/Unicode code units or substrings.
+		middleRunes := getRunes(middle)
+		newRunes := getRunes(new)
+		for {
+			middleRune, okMiddleRune := <-middleRunes
+			newRune, okNewRune := <-newRunes
+
+			if !okNewRune {
+				break
+			}
+
+			if !okMiddleRune {
+				b.WriteRune(newRune)
+			} else {
+				if unicode.IsUpper(middleRune) {
+					b.WriteRune(unicode.ToUpper(newRune))
+				} else {
+					b.WriteRune(unicode.ToLower(newRune))
+				}
+			}
+		}
+
+		b.WriteString(post)
+		s = b.String()
+	}
+}
+
+func getRunes(s string) <-chan rune {
+	c := make(chan rune, len(s))
+	go func() {
+		defer close(c)
+		for _, r := range s {
+			c <- r
+		}
+	}()
+	return c
 }
 
 func getRandomArrayElementAndReplacePlaceholders(texts []string, arguments core.CommandArguments) (string, error) {
