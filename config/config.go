@@ -30,10 +30,6 @@ type RemindersConfig struct {
 	RemindersFile string
 }
 
-type TvConfig struct {
-	ApiKey string
-}
-
 type Config struct {
 	Rooms          []string
 	User           string
@@ -48,7 +44,6 @@ type Config struct {
 	Tv             TvConfig
 	Seen           SeenConfig
 	Reminders      RemindersConfig
-	Tv             TvConfig
 }
 
 // Default returns the default config.
