@@ -22,8 +22,6 @@ import (
 	"github.com/lovelaced/glitzz/modules/untappd"
 	"github.com/lovelaced/glitzz/modules/vatsim"
 	"github.com/pkg/errors"
-	"github.com/lovelaced/glitzz/modules/degeneracy"
-	"github.com/lovelaced/glitzz/modules/tv"
 )
 
 var log = logging.New("modules")
@@ -54,22 +52,22 @@ func createModules(moduleConstructors map[string]moduleConstructor, moduleNames 
 
 func getModuleConstructors() map[string]moduleConstructor {
 	modules := map[string]moduleConstructor{
-		"c3":        c3.New,
-		"decide":    decide.New,
+		"c3":         c3.New,
+		"decide":     decide.New,
 		"degeneracy": degeneracy.New,
-		"fourchan":  fourchan.New,
-		"info":      info.New,
-		"links":     links.New,
-		"pipes":     pipes.New,
-		"quotes":    quotes.New,
-		"reactions": reactions.New,
-		"reminders": reminders.New,
-		"sed":       sed.New,
-		"seen":      seen.New,
-		"tell":      tell.New,
-		"tv":        tv.New,
-		"untappd":   untappd.New,
-		"vatsim":    vatsim.New,
+		"fourchan":   fourchan.New,
+		"info":       info.New,
+		"links":      links.New,
+		"pipes":      pipes.New,
+		"quotes":     quotes.New,
+		"reactions":  reactions.New,
+		"reminders":  reminders.New,
+		"sed":        sed.New,
+		"seen":       seen.New,
+		"tell":       tell.New,
+		"tv":         tv.New,
+		"untappd":    untappd.New,
+		"vatsim":     vatsim.New,
 	}
 	return modules
 }
