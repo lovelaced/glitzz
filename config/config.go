@@ -18,6 +18,10 @@ type TellConfig struct {
 	TellFile string
 }
 
+type TvConfig struct {
+	ApiKey string
+}
+
 type SeenConfig struct {
 	SeenFile string
 }
@@ -41,6 +45,7 @@ type Config struct {
 	Untappd        UntappdConfig
 	Quotes         QuotesConfig
 	Tell           TellConfig
+	Tv             TvConfig
 	Seen           SeenConfig
 	Reminders      RemindersConfig
 	Tv             TvConfig
@@ -66,6 +71,7 @@ func Default() Config {
 			"quotes",
 			"reactions",
 			"reminders",
+			"sed",
 			"seen",
 			"tell",
 			"vatsim",
