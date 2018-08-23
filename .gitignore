@@ -1,1 +1,3 @@
 build/
+.idea/
+cmd/glitzz/config.json

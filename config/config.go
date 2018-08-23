@@ -18,16 +18,16 @@ type TellConfig struct {
 	TellFile string
 }
 
+type TvConfig struct {
+	ApiKey string
+}
+
 type SeenConfig struct {
 	SeenFile string
 }
 
 type RemindersConfig struct {
 	RemindersFile string
-}
-
-type TvConfig struct {
-	ApiKey string
 }
 
 type Config struct {
@@ -41,9 +41,9 @@ type Config struct {
 	Untappd        UntappdConfig
 	Quotes         QuotesConfig
 	Tell           TellConfig
+	Tv             TvConfig
 	Seen           SeenConfig
 	Reminders      RemindersConfig
-	Tv             TvConfig
 }
 
 // Default returns the default config.
@@ -57,6 +57,8 @@ func Default() Config {
 		CommandPrefix: ".",
 		EnabledModules: []string{
 			"c3",
+			"decide",
+			"degeneracy",
 			"fourchan",
 			"info",
 			"links",
@@ -64,6 +66,7 @@ func Default() Config {
 			"quotes",
 			"reactions",
 			"reminders",
+			"sed",
 			"seen",
 			"tell",
 			"vatsim",

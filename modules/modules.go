@@ -6,6 +6,8 @@ import (
 	"github.com/lovelaced/glitzz/core"
 	"github.com/lovelaced/glitzz/logging"
 	"github.com/lovelaced/glitzz/modules/c3"
+	"github.com/lovelaced/glitzz/modules/decide"
+	"github.com/lovelaced/glitzz/modules/degeneracy"
 	"github.com/lovelaced/glitzz/modules/fourchan"
 	"github.com/lovelaced/glitzz/modules/info"
 	"github.com/lovelaced/glitzz/modules/links"
@@ -20,6 +22,8 @@ import (
 	"github.com/lovelaced/glitzz/modules/untappd"
 	"github.com/lovelaced/glitzz/modules/vatsim"
 	"github.com/pkg/errors"
+	"github.com/lovelaced/glitzz/modules/degeneracy"
+	"github.com/lovelaced/glitzz/modules/tv"
 )
 
 var log = logging.New("modules")
@@ -51,6 +55,8 @@ func createModules(moduleConstructors map[string]moduleConstructor, moduleNames 
 func getModuleConstructors() map[string]moduleConstructor {
 	modules := map[string]moduleConstructor{
 		"c3":        c3.New,
+		"decide":    decide.New,
+		"degeneracy": degeneracy.New,
 		"fourchan":  fourchan.New,
 		"info":      info.New,
 		"links":     links.New,
