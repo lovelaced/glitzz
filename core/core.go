@@ -1,8 +1,11 @@
 package core
 
 import (
+	"github.com/lovelaced/glitzz/logging"
 	"github.com/thoj/go-ircevent"
 )
+
+var log = logging.New("core")
 
 type Command struct {
 
