@@ -49,8 +49,8 @@ func runRun(c guinea.Context) error {
 		}
 	})
 	con.AddCallback("PRIVMSG", func(e *irc.Event) {
-		handleEvent(loadedModules, e)
-		runCommand(loadedModules, e, sender, conf.CommandPrefix)
+		go handleEvent(loadedModules, e)
+		go runCommand(loadedModules, e, sender, conf.CommandPrefix)
 	})
 	con.AddCallback("*", func(e *irc.Event) {
 		code, err := strconv.Atoi(e.Code)
