@@ -49,8 +49,8 @@ func runRun(c guinea.Context) error {
 		}
 	})
 	con.AddCallback("PRIVMSG", func(e *irc.Event) {
-		handleEvent(loadedModules, e)
-		runCommand(loadedModules, e, sender)
+		go handleEvent(loadedModules, e)
+		go runCommand(loadedModules, e, sender, conf.CommandPrefix)
 	})
 	con.AddCallback("*", func(e *irc.Event) {
 		code, err := strconv.Atoi(e.Code)
@@ -70,16 +70,20 @@ func handleEvent(loadedModules []core.Module, e *irc.Event) {
 	}
 }
 
-func runCommand(loadedModules []core.Module, e *irc.Event, sender core.Sender) {
+func runCommand(loadedModules []core.Module, e *irc.Event, sender core.Sender, commandPrefix string) {
 	command := core.Command{
 		Text:   e.Message(),
 		Nick:   e.Nick,
 		Target: e.Arguments[0],
 	}
-	output, err := core.RunCommand(loadedModules, command)
+	output, err := core.RunCommand(loadedModules, command, commandPrefix)
 	if err != nil {
-		runLog.Error("error executing command", "command", command, "err", err)
-		sender.Reply(e, "Internal error occured, check the logs!")
+		if core.IsPipingError(err) {
+			runLog.Debug("pipe is broken", "command", command, "err", err)
+		} else {
+			runLog.Error("error executing command", "command", command, "err", err)
+			sender.Reply(e, "Internal error occured, check the logs!")
+		}
 	} else {
 		for _, line := range output {
 			sender.Reply(e, line)

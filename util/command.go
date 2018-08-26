@@ -27,3 +27,7 @@ func GetCommandArguments(msg string, prefix string) ([]string, error) {
 	_, arguments, err := parseCommand(msg, prefix)
 	return arguments, err
 }
+
+func IsCommand(msg string, prefix string) bool {
+	return strings.HasPrefix(msg, prefix)
+}
