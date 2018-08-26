@@ -73,6 +73,7 @@ func (b *Base) HandleEvent(event *irc.Event) {
 func (b *Base) GetCommandName(msg string) (string, error) {
 	return util.GetCommandName(msg, b.Config.CommandPrefix)
 }
+
 func (b *Base) GetCommandArguments(msg string) ([]string, error) {
 	return util.GetCommandArguments(msg, b.Config.CommandPrefix)
 }
