@@ -41,7 +41,7 @@ var argumentParsingError = errors.New("Argument parsing failed")
 var commandNotFoundError = errors.New("Command not found")
 var commandParsingError = errors.New("Command parsing failed")
 
-func IsMalformedCommandError(err error) bool {
+func isMalformedCommandError(err error) bool {
 	return err == argumentParsingError ||
 		err == commandNotFoundError ||
 		err == commandParsingError
