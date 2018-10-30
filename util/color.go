@@ -23,3 +23,13 @@ func Normaltext(colorable string) string {
 	result := colors["NORMAL"] + colorable
 	return result
 }
+
+func Returntonormal(colorable string) string {
+	result := colorable + colors["NORMAL"]
+	return result
+}
+
+func Boldtext(colorable string) string {
+	result := colors["BOLD"] + colorable
+	return result
+}

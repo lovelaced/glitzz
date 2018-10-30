@@ -3,20 +3,16 @@ package sed
 import (
 	"github.com/lovelaced/glitzz/config"
 	"github.com/lovelaced/glitzz/core"
+	"github.com/lovelaced/glitzz/util"
 	"github.com/thoj/go-ircevent"
 	"regexp"
 	"strings"
 	"sync"
 )
 
-var historyLimit = 100
-var sedPattern = regexp.MustCompile(`^ *[a-zA-Z]?/.*/.*/?[a-zA-Z]?$`)
-var hq HistoryQueue
+const historyLimit = 100
 
-type HistoryQueue struct {
-	sync.RWMutex
-	items []*irc.Event
-}
+var sedPattern = regexp.MustCompile(`^.*[a-zA-Z]?/.*/.*/?[a-zA-Z]?$`)
 
 func New(sender core.Sender, conf config.Config) (core.Module, error) {
 	rv := &sed{
@@ -27,92 +23,83 @@ func New(sender core.Sender, conf config.Config) (core.Module, error) {
 
 type sed struct {
 	core.Base
-}
-
-func (hq *HistoryQueue) Append(item *irc.Event) {
-	hq.Lock()
-	defer hq.Unlock()
-	hq.items = append(hq.items, item)
+	sync.RWMutex
+	items []*irc.Event
 }
 
 func (r *sed) HandleEvent(event *irc.Event) {
 	if event.Code == "PRIVMSG" {
-		var nicks []string
-		var repl []string
-		if len(hq.items) >= historyLimit {
-			hq.Lock()
-			defer hq.Unlock()
-			hq.items = hq.items[1:]
+		var replaced []string
+		r.items = append(r.items, event)
+		if len(r.items) >= historyLimit {
+			r.Lock()
+			defer r.Unlock()
+			r.items = r.items[1:]
 		}
-		hq.Append(event)
-		for _, msg := range hq.items {
-			nicks = append(nicks, msg.Nick)
-			repl = r.sedReplace(hq, nicks, strings.Fields(event.Message()), event.Nick)
-		}
-		go r.processReplace(repl, event)
+		replaced = r.sedReplace(strings.Fields(event.Message()), event.Nick)
+		go r.processReplace(replaced, event)
 	}
 }
 
-func (r *sed) processReplace(repl []string, e *irc.Event) {
-	text := strings.Join(repl, " ")
+func (r *sed) processReplace(replaced []string, e *irc.Event) {
+	text := strings.Join(replaced, " ")
 	if text != "" {
 		r.Sender.Reply(e, text)
 	}
 }
 
-func (r *sed) sedReplace(hq HistoryQueue, nicks []string, arguments []string, selfnick string) []string {
+func (r *sed) sedReplace(arguments []string, selfnick string) []string {
 	var replaced string
 	var rpl []string
-	for _, argument := range arguments {
-		myself, other := isSed(nicks, argument)
-		if myself || other {
-			println("yep it's sed--->", strings.Join(arguments, " "))
-			println(len(hq.items))
-			if sedPattern.MatchString(strings.Join(arguments, " ")) {
-				sed := strings.Split(strings.Join(arguments, " "), "/")
-				println(sed[0], sed[1], sed[2])
-				first, err := regexp.Compile(sed[1])
-				if err != nil {
-					r.Log.Debug("error compiling regexp", "sed", replaced, "err", err)
+	myself, other := r.isSed(arguments)
+	if myself || other {
+		println("yup it's sed")
+		if sedPattern.MatchString(strings.Join(arguments, " ")) {
+			sed := strings.Split(strings.Join(arguments, " "), "/")
+			first, err := regexp.Compile(sed[1])
+			println(sed[0], sed[1], sed[2])
+			if err != nil {
+				r.Log.Debug("error compiling regexp", "sed", replaced, "err", err)
+			}
+			second, err := regexp.Compile(sed[2])
+			if err != nil {
+				r.Log.Debug("error compiling regexp", "sed", replaced, "err", err)
+			}
+			rep_string := util.Returntonormal(util.Boldtext(second.String()))
+			for i := range r.items {
+				if i == 0 {
+					i = 1
+					continue
+				} else if i == len(r.items) {
+					break
 				}
-				second, err := regexp.Compile(sed[2])
-				if err != nil {
-					r.Log.Debug("error compiling regexp", "sed", replaced, "err", err)
-				}
-				println("True")
-				for i := range hq.items {
-					if i == 0 {
-						i = 1
-						continue
-					} else if i == len(hq.items) {
-						break
+				println(i)
+				var err error
+				if myself {
+					println("Myself")
+					if r.items[len(r.items)-i-1].Nick == selfnick && first.MatchString(r.items[len(r.items)-i-1].Message()) {
+						println("Matched")
+						println(r.items[len(r.items)-i-1].Message())
+						replaced = first.ReplaceAllLiteralString(r.items[len(r.items)-i-1].Message(), rep_string)
+						if err != nil {
+							r.Log.Debug("error running sed", "sed", replaced, "err", err)
+						}
+						rpl = append(rpl, replaced)
+						return rpl
 					}
-					println(i)
-					var err error
-					hq.Lock()
-					defer hq.Unlock()
-					if myself {
-						println("Myself")
-						if hq.items[len(hq.items)-i-1].Nick == selfnick && first.MatchString(hq.items[len(hq.items)-i-1].Message()) {
-							println("Matched")
-							println(hq.items[len(hq.items)-i-1].Message())
-							replaced = first.ReplaceAllLiteralString(hq.items[len(hq.items)-i-1].Message(), second.String())
-							if err != nil {
-								r.Log.Debug("error running sed", "sed", replaced, "err", err)
-							}
-							rpl = append(rpl, replaced)
-							return rpl
+				} else if other {
+					oNick, err := regexp.MatchString(r.items[len(r.items)-i-1].Nick, arguments[0])
+					if err != nil {
+						println("test test test")
+					}
+					if oNick {
+						println("other")
+						replaced = first.ReplaceAllLiteralString(r.items[len(r.items)-i-1].Message(), rep_string)
+						if err != nil {
+							r.Log.Debug("error running sed", "sed", replaced, "err", err)
 						}
-					} else if other {
-						if hq.items[len(hq.items)-i-1].Nick == arguments[0] {
-							println("other")
-							replaced = first.ReplaceAllLiteralString(hq.items[len(hq.items)-i-1].Message(), second.String())
-							if err != nil {
-								r.Log.Debug("error running sed", "sed", replaced, "err", err)
-							}
-							rpl = append(rpl, replaced)
-							return rpl
-						}
+						rpl = append(rpl, replaced)
+						return rpl
 					}
 				}
 			}
@@ -121,13 +108,26 @@ func (r *sed) sedReplace(hq HistoryQueue, nicks []string, arguments []string, se
 	return rpl
 }
 
-func isSed(nicks []string, s string) (bool, bool) {
+func (r *sed) isSed(s []string) (bool, bool) {
 	var other bool
 	var tmp bool
-	myself, _ := regexp.MatchString("^s/.+", s)
-	for _, nick := range nicks {
-		tmp, _ = regexp.MatchString(nick+"([.+]s/)", s)
-		other = other || tmp
+	myself, _ := regexp.MatchString("^s/.+", s[0])
+	for i := range r.items {
+		nick := r.items[i].Nick
+		println(s)
+		println(nick, s[0])
+		isNick, err := regexp.MatchString(nick, s[0])
+		if err != nil {
+			println("somethin's fucked with your regex")
+		}
+		if isNick {
+			tmp, _ = regexp.MatchString("^s/.+", s[1])
+			println("did we match? ", tmp)
+			other = other || tmp
+			if other {
+				return myself, other
+			}
+		}
 	}
 	return myself, other
 }
