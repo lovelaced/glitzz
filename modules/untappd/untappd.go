@@ -46,7 +46,7 @@ func (u *untappd) ut(arguments core.CommandArguments) ([]string, error) {
 	}
 	u.Log.Debug("untappdAPI", "beer", beerResults[0])
 	var text = []string{
-		fmt.Sprintf("%s | %s | %s | %.2f%% | IBU: %d | Rating: %.3f | !https://untappd.com/beer/%d",
+		fmt.Sprintf("%s | %s | %s | %.2f%% ABV | IBU: %d | Rating: %.3f | !https://untappd.com/beer/%d",
 			rawInfo.Name,
 			rawInfo.Style,
 			rawInfo.Brewery.Name,

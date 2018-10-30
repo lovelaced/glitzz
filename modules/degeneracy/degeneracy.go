@@ -18,7 +18,7 @@ type degeneracy struct {
 	core.Base
 }
 
-const shotsDelay = 2 * time.Second
+const shotsDelay = time.Second
 
 func (d *degeneracy) HandleEvent(event *irc.Event) {
 	if event.Code == "PRIVMSG" {
