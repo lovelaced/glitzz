@@ -42,12 +42,10 @@ func runRun(c guinea.Context) error {
 	if err != nil {
 		return errors.Wrap(err, "error creating modules")
 	}
-
-	con.AddCallback("001", func(e *irc.Event) {
-		for _, room := range conf.Rooms {
-			con.Join(room)
-		}
-	})
+	for _, room := range conf.Rooms {
+		println("Joining %s", room)
+		con.Join(room)
+	}
 	con.AddCallback("PRIVMSG", func(e *irc.Event) {
 		go handleEvent(loadedModules, e)
 		go runCommand(loadedModules, e, sender, conf.CommandPrefix)
