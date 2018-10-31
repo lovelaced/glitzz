@@ -81,6 +81,7 @@ func (r *sed) sedReplace(arguments []string, selfnick string) []string {
 						println("Matched")
 						println(r.items[len(r.items)-i-1].Message())
 						replaced = first.ReplaceAllLiteralString(r.items[len(r.items)-i-1].Message(), rep_string)
+						replaced = selfnick + util.Returntonormal(util.Boldtext(" meant")) + " to say: " + replaced
 						if err != nil {
 							r.Log.Debug("error running sed", "sed", replaced, "err", err)
 						}
@@ -95,6 +96,8 @@ func (r *sed) sedReplace(arguments []string, selfnick string) []string {
 					if oNick {
 						println("other")
 						replaced = first.ReplaceAllLiteralString(r.items[len(r.items)-i-1].Message(), rep_string)
+						replaced = selfnick + " thinks " + r.items[len(r.items)-i-1].Nick + util.Returntonormal(util.Boldtext(" meant")) +
+							" to say: " + replaced
 						if err != nil {
 							r.Log.Debug("error running sed", "sed", replaced, "err", err)
 						}

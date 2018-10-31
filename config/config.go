@@ -10,6 +10,13 @@ type UntappdConfig struct {
 	ClientSecret string
 }
 
+type RedditConfig struct {
+	ClientID     string
+	ClientSecret string
+	Username     string
+	Password     string
+}
+
 type QuotesConfig struct {
 	QuotesDirectory string
 }
@@ -38,6 +45,7 @@ type Config struct {
 	TLS            bool
 	CommandPrefix  string
 	EnabledModules []string
+	Reddit         RedditConfig
 	Untappd        UntappdConfig
 	Quotes         QuotesConfig
 	Tell           TellConfig
@@ -65,6 +73,7 @@ func Default() Config {
 			"pipes",
 			"quotes",
 			"reactions",
+			"reddit",
 			"reminders",
 			"sed",
 			"seen",
@@ -74,6 +83,12 @@ func Default() Config {
 		Untappd: UntappdConfig{
 			ClientID:     "",
 			ClientSecret: "",
+		},
+		Reddit: RedditConfig{
+			ClientID:     "",
+			ClientSecret: "",
+			Username:     "",
+			Password:     "",
 		},
 		Quotes: QuotesConfig{
 			QuotesDirectory: "_quotes",
