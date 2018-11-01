@@ -56,7 +56,7 @@ func startPolling(conf config.Config, o *geddit.OAuthSession) (*geddit.OAuthSess
 	tokenTime := time.Now()
 	var err error
 	for {
-		if time.Since(tokenTime).Seconds() >= 1 {
+		if time.Since(tokenTime).Hours() >= 1 {
 			log.Info("Refreshing token...")
 			o, err = redditAuth(conf)
 			if err != nil {
