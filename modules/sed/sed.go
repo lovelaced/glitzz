@@ -3,12 +3,15 @@ package sed
 import (
 	"github.com/lovelaced/glitzz/config"
 	"github.com/lovelaced/glitzz/core"
+	"github.com/lovelaced/glitzz/logging"
 	"github.com/lovelaced/glitzz/util"
 	"github.com/thoj/go-ircevent"
 	"regexp"
 	"strings"
 	"sync"
 )
+
+var sedLog = logging.New("sed")
 
 const historyLimit = 100
 
@@ -53,11 +56,9 @@ func (r *sed) sedReplace(arguments []string, selfnick string) []string {
 	var rpl []string
 	myself, other := r.isSed(arguments)
 	if myself || other {
-		println("yup it's sed")
 		if sedPattern.MatchString(strings.Join(arguments, " ")) {
 			sed := strings.Split(strings.Join(arguments, " "), "/")
 			first, err := regexp.Compile(sed[1])
-			println(sed[0], sed[1], sed[2])
 			if err != nil {
 				r.Log.Debug("error compiling regexp", "sed", replaced, "err", err)
 			}
@@ -73,13 +74,9 @@ func (r *sed) sedReplace(arguments []string, selfnick string) []string {
 				} else if i == len(r.items) {
 					break
 				}
-				println(i)
 				var err error
 				if myself {
-					println("Myself")
 					if r.items[len(r.items)-i-1].Nick == selfnick && first.MatchString(r.items[len(r.items)-i-1].Message()) {
-						println("Matched")
-						println(r.items[len(r.items)-i-1].Message())
 						replaced = first.ReplaceAllLiteralString(r.items[len(r.items)-i-1].Message(), rep_string)
 						replaced = selfnick + util.Returntonormal(util.Boldtext(" meant")) + " to say: " + replaced
 						if err != nil {
@@ -91,10 +88,9 @@ func (r *sed) sedReplace(arguments []string, selfnick string) []string {
 				} else if other {
 					oNick, err := regexp.MatchString(r.items[len(r.items)-i-1].Nick, arguments[0])
 					if err != nil {
-						println("test test test")
+						sedLog.Error("something's fucked with your regex")
 					}
 					if oNick {
-						println("other")
 						replaced = first.ReplaceAllLiteralString(r.items[len(r.items)-i-1].Message(), rep_string)
 						replaced = selfnick + " thinks " + r.items[len(r.items)-i-1].Nick + util.Returntonormal(util.Boldtext(" meant")) +
 							" to say: " + replaced
@@ -119,11 +115,10 @@ func (r *sed) isSed(s []string) (bool, bool) {
 		nick := r.items[i].Nick
 		isNick, err := regexp.MatchString(nick, s[0])
 		if err != nil {
-			println("somethin's fucked with your regex")
+			sedLog.Error("somethin's fucked with your regex")
 		}
 		if isNick {
 			tmp, _ = regexp.MatchString("^s/.+", s[1])
-			println("did we match? ", tmp)
 			other = other || tmp
 			if other {
 				return myself, other
