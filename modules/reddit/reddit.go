@@ -49,13 +49,14 @@ func redditAuth(conf config.Config) (*geddit.OAuthSession, error) {
 		return nil, err
 	}
 	log.Info("Creating the reddit bot...")
+	return o, nil
 }
 
 func startPolling(conf config.Config, o *geddit.OAuthSession) (*geddit.OAuthSession, error) {
 	tokenTime := time.Now()
 	var err error
 	for {
-		if time.Since(tokenTime).Hours() >= 1 {
+		if time.Since(tokenTime).Seconds() >= 1 {
 			log.Info("Refreshing token...")
 			o, err = redditAuth(conf)
 			if err != nil {
