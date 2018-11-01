@@ -8,9 +8,12 @@ import (
 	"github.com/pkg/errors"
 	"math/rand"
 	"strings"
+	"time"
 )
 
 var log = logging.New("reddit")
+
+const pollInterval = 15
 
 func New(sender core.Sender, conf config.Config) (core.Module, error) {
 	o, err := redditAuth(conf)
@@ -45,7 +48,23 @@ func redditAuth(conf config.Config) (*geddit.OAuthSession, error) {
 		return nil, err
 	}
 	log.Info("Creating the reddit bot...")
+	go startPolling(conf, o)
 	return o, nil
+}
+
+func startPolling(conf config.Config, o *geddit.OAuthSession) (*geddit.OAuthSession, error) {
+	tokenTime := time.Now()
+	for {
+		if time.Since(tokenTime).Hours() == 1 {
+			var err error
+			o, err = redditAuth(conf)
+			if err != nil {
+				return nil, err
+			}
+			tokenTime = time.Now()
+		}
+		time.Sleep(pollInterval * time.Second)
+	}
 }
 
 type reddit struct {
@@ -112,7 +131,6 @@ func (r *reddit) lepic(arguments core.CommandArguments) ([]string, error) {
 		Limit: 500,
 	}
 	posts, err := r.o.SubredditSubmissions(sub, geddit.DefaultPopularity, subOpts)
-	println(posts)
 	if err != nil {
 		return nil, err
 	}

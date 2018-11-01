@@ -43,7 +43,7 @@ func runRun(c guinea.Context) error {
 		return errors.Wrap(err, "error creating modules")
 	}
 	for _, room := range conf.Rooms {
-		println("Joining %s", room)
+		runLog.Debug("Joining " + room)
 		con.Join(room)
 	}
 	con.AddCallback("PRIVMSG", func(e *irc.Event) {
