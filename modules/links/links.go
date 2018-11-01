@@ -13,6 +13,9 @@ import (
 )
 
 const timeout = time.Second * 10
+
+// number of links to read from a single message.
+// if this is changed, be sure to change the number of expected links in links_test.go
 const linkLimit = 1
 const characterLimit = 70
 
@@ -32,9 +35,11 @@ type links struct {
 func (l *links) HandleEvent(event *irc.Event) {
 	if event.Code == "PRIVMSG" {
 		links := extractLinks(strings.Fields(event.Message()))
-		if len(links) <= linkLimit {
-			for _, link := range links {
-				go l.processLink(link, event)
+		if len(links) >= linkLimit {
+			for i, link := range links {
+				if i < linkLimit {
+					go l.processLink(link, event)
+				}
 			}
 		}
 	}
