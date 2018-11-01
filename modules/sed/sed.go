@@ -110,6 +110,9 @@ func (r *sed) sedReplace(arguments []string, selfnick string) []string {
 func (r *sed) isSed(s []string) (bool, bool) {
 	var other bool
 	var tmp bool
+	if len(s) < 3 {
+		return false, false
+	}
 	myself, _ := regexp.MatchString("^s/.+", s[0])
 	for i := range r.items {
 		nick := r.items[i].Nick
