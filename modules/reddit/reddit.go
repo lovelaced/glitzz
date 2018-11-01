@@ -17,6 +17,7 @@ const pollInterval = 15
 
 func New(sender core.Sender, conf config.Config) (core.Module, error) {
 	o, err := redditAuth(conf)
+	go startPolling(conf, o)
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +49,6 @@ func redditAuth(conf config.Config) (*geddit.OAuthSession, error) {
 		return nil, err
 	}
 	log.Info("Creating the reddit bot...")
-	go startPolling(conf, o)
 	return o, nil
 }
 
