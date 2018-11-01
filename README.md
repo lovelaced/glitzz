@@ -1,5 +1,4 @@
-# glitzz [![Build Status](https://travis-ci.org/lovelaced/glitzz.svg?branch=master)](https://travis-ci.org/lovelaced/glitzz) [![codecov](https://codecov.io/gh/lovelaced/glitzz/branch/master/graph/badge.svg)](https://codecov.io/gh/lovelaced/glitzz)
-![glitzz logo](logo.png)
+# ![glitzz_logo](logo.png) [![Build Status](https://travis-ci.org/lovelaced/glitzz.svg?branch=master)](https://travis-ci.org/lovelaced/glitzz) [![codecov](https://codecov.io/gh/lovelaced/glitzz/branch/master/graph/badge.svg)](https://codecov.io/gh/lovelaced/glitzz)
 
 **glitzz** is an IRC bot which is optimized for shitposting and the basic features any IRC channel would likely enjoy.
 
