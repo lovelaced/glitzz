@@ -54,9 +54,10 @@ func redditAuth(conf config.Config) (*geddit.OAuthSession, error) {
 
 func startPolling(conf config.Config, o *geddit.OAuthSession) (*geddit.OAuthSession, error) {
 	tokenTime := time.Now()
+	var err error
 	for {
-		if time.Since(tokenTime).Hours() == 1 {
-			var err error
+		if time.Since(tokenTime).Hours() >= 1 {
+			log.Info("Refreshing token...")
 			o, err = redditAuth(conf)
 			if err != nil {
 				return nil, err
@@ -65,6 +66,7 @@ func startPolling(conf config.Config, o *geddit.OAuthSession) (*geddit.OAuthSess
 		}
 		time.Sleep(pollInterval * time.Second)
 	}
+	return nil, err
 }
 
 type reddit struct {
