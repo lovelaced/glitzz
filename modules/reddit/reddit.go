@@ -49,7 +49,6 @@ func redditAuth(conf config.Config) (*geddit.OAuthSession, error) {
 		return nil, err
 	}
 	log.Info("Creating the reddit bot...")
-	return o, nil
 }
 
 func startPolling(conf config.Config, o *geddit.OAuthSession) (*geddit.OAuthSession, error) {
@@ -66,7 +65,6 @@ func startPolling(conf config.Config, o *geddit.OAuthSession) (*geddit.OAuthSess
 		}
 		time.Sleep(pollInterval * time.Second)
 	}
-	return nil, err
 }
 
 type reddit struct {
