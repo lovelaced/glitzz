@@ -83,7 +83,7 @@ const checkEvery = 100 * time.Millisecond
 const checkN = 100
 
 func TestLinks(t *testing.T) {
-	const expectedLinks = 1
+	const expectedLinks = 3
 
 	f := func(u *url.URL) string {
 		title := fmt.Sprintf("title for %s", u)
