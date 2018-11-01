@@ -117,8 +117,6 @@ func (r *sed) isSed(s []string) (bool, bool) {
 	myself, _ := regexp.MatchString("^s/.+", s[0])
 	for i := range r.items {
 		nick := r.items[i].Nick
-		println(s)
-		println(nick, s[0])
 		isNick, err := regexp.MatchString(nick, s[0])
 		if err != nil {
 			println("somethin's fucked with your regex")

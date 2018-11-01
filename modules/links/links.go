@@ -13,8 +13,8 @@ import (
 )
 
 const timeout = time.Second * 10
-const linkLimit = 4
-const characterLimit = 76
+const linkLimit = 1
+const characterLimit = 70
 
 func New(sender core.Sender, conf config.Config) (core.Module, error) {
 	rv := &links{
