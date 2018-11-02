@@ -17,7 +17,6 @@ const pollInterval = 15
 
 func New(sender core.Sender, conf config.Config) (core.Module, error) {
 	o, err := redditAuth(conf)
-	go startPolling(conf, o)
 	if err != nil {
 		return nil, err
 	}
@@ -25,6 +24,7 @@ func New(sender core.Sender, conf config.Config) (core.Module, error) {
 		Base: core.NewBase("reddit", sender, conf),
 		o:    o,
 	}
+	go rv.startPolling(conf, o)
 	rv.AddCommand("le", rv.le)
 	rv.AddCommand("lepic", rv.lepic)
 	//	rv.AddCommand("lelong", rv.lelong)
@@ -48,17 +48,17 @@ func redditAuth(conf config.Config) (*geddit.OAuthSession, error) {
 	if err != nil {
 		return nil, err
 	}
-	log.Info("Creating the reddit bot...")
+	log.Info("Done logging into reddit...")
 	return o, nil
 }
 
-func startPolling(conf config.Config, o *geddit.OAuthSession) (*geddit.OAuthSession, error) {
+func (r *reddit) startPolling(conf config.Config, o *geddit.OAuthSession) (*geddit.OAuthSession, error) {
 	tokenTime := time.Now()
 	var err error
 	for {
 		if time.Since(tokenTime).Hours() >= 1 {
 			log.Info("Refreshing token...")
-			o, err = redditAuth(conf)
+			r.o, err = redditAuth(conf)
 			if err != nil {
 				return nil, err
 			}
