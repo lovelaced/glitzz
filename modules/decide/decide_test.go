@@ -42,7 +42,7 @@ func TestDecide(t *testing.T) {
 		t.Fatalf("error creating module %s", err)
 	}
 
-	output, err := p.RunCommand(core.Command{Text: ".decide thing or another thing or something else", Nick: "nick"})
+	output, err := p.RunCommand(core.Command{Text: ".decide thing, another thing or something else", Nick: "nick"})
 	if err != nil {
 		t.Errorf("error was not nil %s", err)
 	}
