@@ -76,7 +76,7 @@ var denko = []string{
 }
 
 var shrug = []string{
-	"¯\_(ツ)_/¯",
+	"¯\\_(ツ)_/¯",
 }
 
 var rnh = []string{
