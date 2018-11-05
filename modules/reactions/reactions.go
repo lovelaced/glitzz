@@ -193,6 +193,7 @@ func New(sender core.Sender, conf config.Config) (core.Module, error) {
 	rv.AddCommand("shrug", rv.shrug)
 	rv.AddCommand("rnh", rv.rnh)
 	rv.AddCommand("ernh", rv.ernh)
+	rv.AddCommand("int", rv.intensifies)
 	return rv, nil
 }
 
@@ -218,7 +219,7 @@ func (p *reactions) shrug(arguments core.CommandArguments) ([]string, error) {
 
 func (p *reactions) cute(arguments core.CommandArguments) ([]string, error) {
 	if len(arguments.Arguments) > 0 {
-		text, err := getRandomArrayElementAndReplacePlaceholders(cutelistTarget, arguments)
+		text, err := rRandEle(cutelistTarget, arguments)
 		if err != nil {
 			return nil, err
 		}
@@ -234,7 +235,7 @@ func (p *reactions) cute(arguments core.CommandArguments) ([]string, error) {
 
 func (p *reactions) magic(arguments core.CommandArguments) ([]string, error) {
 	if len(arguments.Arguments) > 0 {
-		text, err := getRandomArrayElementAndReplacePlaceholders(magiclist, arguments)
+		text, err := rRandEle(magiclist, arguments)
 		if err != nil {
 			return nil, err
 		}
@@ -244,9 +245,18 @@ func (p *reactions) magic(arguments core.CommandArguments) ([]string, error) {
 	}
 }
 
+func (p *reactions) intensifies(arguments core.CommandArguments) ([]string, error) {
+	if len(arguments.Arguments) > 0 {
+		argstring := strings.Join(arguments.Arguments, " ")
+		return []string{"[" + argstring + " intensifies]"}, nil
+	} else {
+		return nil, errors.New("no arguments given")
+	}
+}
+
 func (p *reactions) stump(arguments core.CommandArguments) ([]string, error) {
 	if len(arguments.Arguments) > 0 {
-		text, err := getRandomArrayElementAndReplacePlaceholders(stumplist, arguments)
+		text, err := rRandEle(stumplist, arguments)
 		if err != nil {
 			return nil, err
 		}
@@ -329,7 +339,7 @@ func getRunes(s string) <-chan rune {
 	return c
 }
 
-func getRandomArrayElementAndReplacePlaceholders(texts []string, arguments core.CommandArguments) (string, error) {
+func rRandEle(texts []string, arguments core.CommandArguments) (string, error) {
 	text, err := util.GetRandomArrayElement(texts)
 	if err != nil {
 		return "", err
