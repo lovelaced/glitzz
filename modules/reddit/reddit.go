@@ -15,6 +15,8 @@ var log = logging.New("reddit")
 
 const pollInterval = 15
 
+var lastLink = ""
+
 func New(sender core.Sender, conf config.Config) (core.Module, error) {
 	o, err := redditAuth(conf)
 	if err != nil {
@@ -28,6 +30,7 @@ func New(sender core.Sender, conf config.Config) (core.Module, error) {
 	rv.AddCommand("le", rv.le)
 	rv.AddCommand("lepic", rv.lepic)
 	//	rv.AddCommand("lelong", rv.lelong)
+	rv.AddCommand("lelast", rv.lelast)
 	return rv, nil
 }
 
@@ -87,7 +90,17 @@ func (r *reddit) le(arguments core.CommandArguments) ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	return r.getRandomComment(r.commentList)
+	var comm *geddit.Comment
+	comm, err = r.getRandomComment(r.commentList)
+	if err != nil {
+		return nil, err
+	}
+	lastLink = comm.Permalink
+	return []string{comm.Body}, nil
+}
+
+func (r *reddit) lelast(arguments core.CommandArguments) ([]string, error) {
+	return []string{"https://reddit.com" + lastLink}, nil
 }
 
 //func (r *reddit) lelong(arguments core.CommandArguments) ([]string, error) {
@@ -118,10 +131,10 @@ func (r *reddit) getSubComments(arguments core.CommandArguments) error {
 	return nil
 }
 
-func (r *reddit) getRandomComment(commentlist []*geddit.Comment) ([]string, error) {
+func (r *reddit) getRandomComment(commentlist []*geddit.Comment) (*geddit.Comment, error) {
 	if len(commentlist) > 0 {
 		commentIndex := rand.Intn(len(commentlist))
-		return strings.Split(commentlist[commentIndex].Body, "\n"), nil
+		return commentlist[commentIndex], nil
 	}
 	return nil, errors.New("Could not find a random post")
 }
