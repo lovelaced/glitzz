@@ -6,6 +6,7 @@ import (
 	"errors"
 	"github.com/lovelaced/glitzz/config"
 	"github.com/lovelaced/glitzz/core"
+	"html"
 	"math/rand"
 	// "github.com/lovelaced/glitzz/logging"
 )
@@ -90,7 +91,7 @@ func (s *stackexchange) seTitle(arguments core.CommandArguments) ([]string, erro
 		return nil, err
 	}
 	lastLink = question.Link
-	return []string{question.Title}, err
+	return []string{html.UnescapeString(question.Title)}, err
 }
 
 func (s *stackexchange) seLastLink(arguments core.CommandArguments) ([]string, error) {
