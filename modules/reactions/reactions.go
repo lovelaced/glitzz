@@ -75,6 +75,10 @@ var denko = []string{
 	"(´･ω･`)",
 }
 
+var shrug = []string{
+	"_",
+}
+
 var rnh = []string{
 	"--- REAL NIGGA HOURS ---",
 }
@@ -186,6 +190,7 @@ func New(sender core.Sender, conf config.Config) (core.Module, error) {
 	rv.AddCommand("stump", rv.stump)
 	rv.AddCommand("spurd", rv.spurd)
 	rv.AddCommand("denko", rv.denko)
+	rv.AddCommand("shrug", rv.shrug)
 	rv.AddCommand("rnh", rv.rnh)
 	rv.AddCommand("ernh", rv.ernh)
 	return rv, nil
@@ -205,6 +210,10 @@ func (p *reactions) rnh(arguments core.CommandArguments) ([]string, error) {
 
 func (p *reactions) ernh(arguments core.CommandArguments) ([]string, error) {
 	return ernh, nil
+}
+
+func (p *reactions) shrug(arguments core.CommandArguments) ([]string, error) {
+	return shrug, nil
 }
 
 func (p *reactions) cute(arguments core.CommandArguments) ([]string, error) {
