@@ -71,6 +71,18 @@ var magiclist = []string{
 	"(○´･∀･)o<･。:*ﾟ;+． {target}",
 }
 
+var denko = []string{
+	"(´･ω･`)",
+}
+
+var rnh = []string{
+	"--- REAL NIGGA HOURS ---",
+}
+
+var ernh = []string{
+	" --- END REAL NIGGA HOURS ---",
+}
+
 var stumplist = []string{
 	"I don't even want to talk about {target}. Just look at his numbers. He's a very low-energy person.",
 	"People come to me and tell me, they say, \"Donald, we like you, but there's something weird about {target}.\" It's a very serious problem.",
@@ -173,11 +185,26 @@ func New(sender core.Sender, conf config.Config) (core.Module, error) {
 	rv.AddCommand("magic", rv.magic)
 	rv.AddCommand("stump", rv.stump)
 	rv.AddCommand("spurd", rv.spurd)
+	rv.AddCommand("denko", rv.denko)
+	rv.AddCommand("rnh", rv.rnh)
+	rv.AddCommand("ernh", rv.ernh)
 	return rv, nil
 }
 
 type reactions struct {
 	core.Base
+}
+
+func (p *reactions) denko(arguments core.CommandArguments) ([]string, error) {
+	return denko, nil
+}
+
+func (p *reactions) rnh(arguments core.CommandArguments) ([]string, error) {
+	return rnh, nil
+}
+
+func (p *reactions) ernh(arguments core.CommandArguments) ([]string, error) {
+	return ernh, nil
 }
 
 func (p *reactions) cute(arguments core.CommandArguments) ([]string, error) {
