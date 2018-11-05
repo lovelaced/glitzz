@@ -5,6 +5,7 @@ import (
 	"github.com/lovelaced/glitzz/config"
 	"github.com/lovelaced/glitzz/core"
 	"github.com/lovelaced/glitzz/util"
+	"regexp"
 	"strings"
 )
 
@@ -23,7 +24,7 @@ type decide struct {
 func (d *decide) decide(arguments core.CommandArguments) ([]string, error) {
 	if len(arguments.Arguments) > 0 {
 		s := strings.Join(arguments.Arguments, " ")
-		elements := strings.Split(s, " or ")
+		elements := regexp.MustCompile(", | or ").Split(s, -1)
 		if len(elements) < 2 {
 			return nil, nil
 		}
