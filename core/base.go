@@ -41,7 +41,7 @@ var argumentParsingError = errors.New("Argument parsing failed")
 var commandNotFoundError = errors.New("Command not found")
 var commandParsingError = errors.New("Command parsing failed")
 
-func IsMalformedCommandError(err error) bool {
+func isMalformedCommandError(err error) bool {
 	return err == argumentParsingError ||
 		err == commandNotFoundError ||
 		err == commandParsingError
@@ -73,6 +73,7 @@ func (b *Base) HandleEvent(event *irc.Event) {
 func (b *Base) GetCommandName(msg string) (string, error) {
 	return util.GetCommandName(msg, b.Config.CommandPrefix)
 }
+
 func (b *Base) GetCommandArguments(msg string) ([]string, error) {
 	return util.GetCommandArguments(msg, b.Config.CommandPrefix)
 }

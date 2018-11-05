@@ -90,3 +90,15 @@ func ExampleGetCommandArguments() {
 	fmt.Println(args)
 	// Output: [arg1 arg2]
 }
+
+func TestIsCommandYes(t *testing.T) {
+	if !IsCommand(".command arg1 arg2", ".") {
+		t.Fatalf("this should be a command")
+	}
+}
+
+func TestIsCommandNo(t *testing.T) {
+	if IsCommand("command arg1 arg2", ".") {
+		t.Fatalf("this should not be a command")
+	}
+}
