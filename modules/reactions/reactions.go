@@ -71,15 +71,15 @@ var magiclist = []string{
 	"(○´･∀･)o<･。:*ﾟ;+． {target}",
 }
 
-var denkolist = []string{
+var denko = []string{
 	"(´･ω･`)",
 }
 
-var rnhlist = []string{
+var rnh = []string{
 	"--- REAL NIGGA HOURS ---",
 }
 
-var ernhlist = []string{
+var ernh = []string{
 	" --- END REAL NIGGA HOURS ---",
 }
 
@@ -196,51 +196,15 @@ type reactions struct {
 }
 
 func (p *reactions) denko(arguments core.CommandArguments) ([]string, error) {
-	if len(arguments.Arguments) > 0 {
-		text, err := getRandomArrayElementAndReplacePlaceholders(denkolist, arguments)
-		if err != nil {
-			return nil, err
-		}
-		return []string{text}, nil
-	} else {
-		text, err := util.GetRandomArrayElement(denkolist)
-		if err != nil {
-			return nil, err
-		}
-		return []string{text}, nil
-	}
+	return denko, nil
 }
 
 func (p *reactions) rnh(arguments core.CommandArguments) ([]string, error) {
-	if len(arguments.Arguments) > 0 {
-		text, err := getRandomArrayElementAndReplacePlaceholders(rnhlist, arguments)
-		if err != nil {
-			return nil, err
-		}
-		return []string{text}, nil
-	} else {
-		text, err := util.GetRandomArrayElement(rnhlist)
-		if err != nil {
-			return nil, err
-		}
-		return []string{text}, nil
-	}
+	return rnh, nil
 }
 
 func (p *reactions) ernh(arguments core.CommandArguments) ([]string, error) {
-	if len(arguments.Arguments) > 0 {
-		text, err := getRandomArrayElementAndReplacePlaceholders(ernhlist, arguments)
-		if err != nil {
-			return nil, err
-		}
-		return []string{text}, nil
-	} else {
-		text, err := util.GetRandomArrayElement(ernhlist)
-		if err != nil {
-			return nil, err
-		}
-		return []string{text}, nil
-	}
+	return ernh, nil
 }
 
 func (p *reactions) cute(arguments core.CommandArguments) ([]string, error) {
