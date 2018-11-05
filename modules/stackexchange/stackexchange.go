@@ -33,6 +33,7 @@ func New(sender core.Sender, conf config.Config) (core.Module, error) {
 	rv := &stackexchange{
 		Base: core.NewBase("stackexchange", sender, conf),
 	}
+	rv.AddCommand("so", rv.seStackOverflow)
 	rv.AddCommand(sePrefix, rv.seTitle)
 	rv.AddCommand(sePrefix+seAnswer, rv.seTitle)
 	rv.AddCommand(sePrefix+seLast, rv.seLastLink)
@@ -94,4 +95,10 @@ func (s *stackexchange) seTitle(arguments core.CommandArguments) ([]string, erro
 
 func (s *stackexchange) seLastLink(arguments core.CommandArguments) ([]string, error) {
 	return []string{lastLink}, nil
+}
+
+func (s *stackexchange) seStackOverflow(arguments core.CommandArguments) ([]string, error) {
+	args := arguments
+	args.Arguments = append([]string{"stackoverflow"}, args.Arguments...)
+	return s.seTitle(args)
 }
