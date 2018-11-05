@@ -80,7 +80,7 @@ func runCommand(loadedModules []core.Module, e *irc.Event, sender core.Sender, c
 			runLog.Debug("pipe is broken", "command", command, "err", err)
 		} else {
 			runLog.Error("error executing command", "command", command, "err", err)
-			sender.Reply(e, "Internal error occured, check the logs!")
+			sender.Reply(e, err.Error())
 		}
 	} else {
 		for _, line := range output {
