@@ -83,6 +83,7 @@ func (l *links) getLinkTitle(link string) (string, error) {
 }
 
 func formatResponse(link string) string {
+	link = strings.Replace(link, "\n", "", -1)
 	return fmt.Sprintf("[ %s ]", link)
 }
 
