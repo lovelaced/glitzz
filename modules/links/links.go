@@ -35,7 +35,8 @@ type links struct {
 func (l *links) HandleEvent(event *irc.Event) {
 	if event.Code == "PRIVMSG" {
 		links := extractLinks(strings.Fields(event.Message()))
-		if len(links) >= linkLimit {
+		is_ibip := strings.HasPrefix(event.Message(), "Reporting in! ")
+		if is_ibip == false && len(links) >= linkLimit {
 			for i, link := range links {
 				if i < linkLimit {
 					go l.processLink(link, event)
