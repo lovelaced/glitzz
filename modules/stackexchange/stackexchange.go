@@ -2,13 +2,13 @@ package stackexchange
 
 import (
 	"github.com/PuffyVulva/Stack-on-Go/stackongo"
-
-	"errors"
 	"github.com/lovelaced/glitzz/config"
 	"github.com/lovelaced/glitzz/core"
+
+	"errors"
 	"html"
 	"math/rand"
-	// "github.com/lovelaced/glitzz/logging"
+	"strings"
 )
 
 var (
@@ -18,11 +18,11 @@ var (
 )
 
 const (
-	errNoQuestion = "No Questions for given tags/site"
-	defaultSite   = "stackoverflow"
-	sePrefix      = "se"
-	seAnswer      = "a"
-	seLast        = "last"
+	errInvalidSite = "Invalid site: "
+	errInvalidTags = "Tag(s) not found"
+	defaultSite    = "workplace"
+	sePrefix       = "se"
+	seLast         = "last"
 )
 
 // se = seprefix
@@ -36,7 +36,6 @@ func New(sender core.Sender, conf config.Config) (core.Module, error) {
 	}
 	rv.AddCommand("so", rv.seStackOverflow)
 	rv.AddCommand(sePrefix, rv.seTitle)
-	rv.AddCommand(sePrefix+seAnswer, rv.seTitle)
 	rv.AddCommand(sePrefix+seLast, rv.seLastLink)
 	return rv, nil
 }
@@ -71,10 +70,13 @@ func (s *stackexchange) getRandQuestion(arguments core.CommandArguments) (*stack
 	questions, err := session.AllQuestions(params)
 
 	if err != nil {
+		if strings.Contains(err.Error(), "No site found for name") {
+			return nil, errors.New(errInvalidSite + site)
+		}
 		return nil, err
 	}
 	if len(questions.Items) == 0 {
-		return nil, errors.New(errNoQuestion)
+		return nil, errors.New(errInvalidTags)
 	}
 
 	index := rand.Intn(len(questions.Items))
@@ -85,7 +87,7 @@ func (s *stackexchange) seTitle(arguments core.CommandArguments) ([]string, erro
 	question, err := s.getRandQuestion(arguments)
 
 	if err != nil {
-		if err.Error() == errNoQuestion {
+		if err.Error() == errInvalidTags || strings.Contains(err.Error(), errInvalidSite) {
 			return []string{err.Error()}, nil
 		}
 		return nil, err
