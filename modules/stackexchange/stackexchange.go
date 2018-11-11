@@ -11,37 +11,27 @@ import (
 	"strings"
 )
 
-var (
-	// Put your default tags here
-	defaultTags []string
-	lastLink    string
-)
-
 const (
 	errInvalidSite = "Invalid site: "
 	errInvalidTags = "Tag(s) not found"
 	defaultSite    = "workplace"
-	sePrefix       = "se"
-	seLast         = "last"
 )
 
-// se = seprefix
-// seprefix: seq (question title)
-// seq: question title
-
-// New initializes the stackexchange module
+// New registers the stackexchange module
 func New(sender core.Sender, conf config.Config) (core.Module, error) {
 	rv := &stackexchange{
 		Base: core.NewBase("stackexchange", sender, conf),
 	}
+
 	rv.AddCommand("so", rv.seStackOverflow)
-	rv.AddCommand(sePrefix, rv.seTitle)
-	rv.AddCommand(sePrefix+seLast, rv.seLastLink)
+	rv.AddCommand("se", rv.seTitle)
+	rv.AddCommand("selast", rv.seLastLink)
 	return rv, nil
 }
 
 type stackexchange struct {
 	core.Base
+	lastLink string
 }
 
 func (s *stackexchange) getSite(arguments core.CommandArguments) string {
@@ -55,7 +45,7 @@ func (s *stackexchange) getTags(arguments core.CommandArguments) []string {
 	if len(arguments.Arguments) > 1 {
 		return arguments.Arguments[1:]
 	}
-	return defaultTags
+	return nil
 }
 
 func (s *stackexchange) getRandQuestion(arguments core.CommandArguments) (*stackongo.Question, error) {
@@ -68,7 +58,6 @@ func (s *stackexchange) getRandQuestion(arguments core.CommandArguments) (*stack
 	params.AddVectorized("tagged", tags)
 
 	questions, err := session.AllQuestions(params)
-
 	if err != nil {
 		if strings.Contains(err.Error(), "No site found for name") {
 			return nil, errors.New(errInvalidSite + site)
@@ -85,19 +74,19 @@ func (s *stackexchange) getRandQuestion(arguments core.CommandArguments) (*stack
 
 func (s *stackexchange) seTitle(arguments core.CommandArguments) ([]string, error) {
 	question, err := s.getRandQuestion(arguments)
-
 	if err != nil {
 		if err.Error() == errInvalidTags || strings.Contains(err.Error(), errInvalidSite) {
 			return []string{err.Error()}, nil
 		}
 		return nil, err
 	}
-	lastLink = question.Link
+
+	s.lastLink = question.Link
 	return []string{html.UnescapeString(question.Title)}, err
 }
 
 func (s *stackexchange) seLastLink(arguments core.CommandArguments) ([]string, error) {
-	return []string{lastLink}, nil
+	return []string{s.lastLink}, nil
 }
 
 func (s *stackexchange) seStackOverflow(arguments core.CommandArguments) ([]string, error) {
