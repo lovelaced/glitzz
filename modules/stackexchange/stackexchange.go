@@ -86,6 +86,9 @@ func (s *stackexchange) seTitle(arguments core.CommandArguments) ([]string, erro
 }
 
 func (s *stackexchange) seLastLink(arguments core.CommandArguments) ([]string, error) {
+	if s.lastLink == "" {
+		return []string{"https://stackexchange.com"}, nil
+	}
 	return []string{s.lastLink}, nil
 }
 
