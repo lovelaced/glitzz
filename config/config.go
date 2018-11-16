@@ -75,6 +75,7 @@ func Default() Config {
 			"reactions",
 			"reddit",
 			"reminders",
+			"stackexchange",
 			"sed",
 			"seen",
 			"tell",
