@@ -8,6 +8,7 @@ import (
 	"github.com/thoj/go-ircevent"
 	"golang.org/x/net/html"
 	"net/http"
+	"regexp"
 	"strings"
 	"time"
 )
@@ -52,6 +53,7 @@ func (l *links) processLink(link string, e *irc.Event) {
 		l.Log.Debug("error getting link title", "link", link, "err", err)
 		return
 	}
+	title = cleanupTitle(title)
 	if len(title) > characterLimit {
 		title = title[:characterLimit-3]
 		title += "..."
@@ -81,6 +83,13 @@ func (l *links) getLinkTitle(link string) (string, error) {
 		return "", errors.Wrap(err, "could not find the title")
 	}
 	return title, nil
+}
+
+func cleanupTitle(title string) string {
+	re := regexp.MustCompile(`\r?\n`)
+	title = re.ReplaceAllString(title, " ")
+	title = strings.Join(strings.Fields(title), " ")
+	return title
 }
 
 func formatResponse(link string) string {
