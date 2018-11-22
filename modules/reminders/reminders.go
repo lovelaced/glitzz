@@ -91,6 +91,7 @@ var unitDurations = map[time.Duration][]string{
 	time.Minute:          []string{"m", "min", "minute", "minutes"},
 	time.Hour:            []string{"h", "hour", "hours"},
 	24 * time.Hour:       []string{"d", "day", "days"},
+	7 * 24 * time.Hour:   []string{"w", "week", "weeks"},
 	365 * 24 * time.Hour: []string{"y", "year", "years"},
 }
 
