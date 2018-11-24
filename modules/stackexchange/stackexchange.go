@@ -27,13 +27,15 @@ func New(sender core.Sender, conf config.Config) (core.Module, error) {
 
 	rv.AddCommand("so", rv.seStackOverflow)
 	rv.AddCommand("se", rv.seTitle)
-	rv.AddCommand("selast", rv.seLastLink)
+	rv.AddCommand("solast", rv.seLastSOLink)
+	rv.AddCommand("selast", rv.seLastSELink)
 	return rv, nil
 }
 
 type stackexchange struct {
 	core.Base
-	lastLink string
+	lastSELink string
+	lastSOLink string
 }
 
 func (s *stackexchange) getSite(arguments core.CommandArguments) string {
@@ -50,7 +52,7 @@ func (s *stackexchange) getTags(arguments core.CommandArguments) []string {
 	return nil
 }
 
-func (s *stackexchange) getRandQuestion(arguments core.CommandArguments) (*stackongo.Question, error) {
+func (s *stackexchange) getRandQuestion(arguments core.CommandArguments) (*stackongo.Question, string, error) {
 	site := s.getSite(arguments)
 	tags := s.getTags(arguments)
 
@@ -66,20 +68,20 @@ func (s *stackexchange) getRandQuestion(arguments core.CommandArguments) (*stack
 	questions, err := session.AllQuestions(params)
 	if err != nil {
 		if strings.Contains(err.Error(), "No site found for name") {
-			return nil, errors.New(errInvalidSite + site)
+			return nil, site, errors.New(errInvalidSite + site)
 		}
-		return nil, err
+		return nil, site, err
 	}
 	if len(questions.Items) == 0 {
-		return nil, errors.New(errInvalidTags)
+		return nil, site, errors.New(errInvalidTags)
 	}
 
 	index := rand.Intn(len(questions.Items))
-	return &questions.Items[index], nil
+	return &questions.Items[index], site, nil
 }
 
 func (s *stackexchange) seTitle(arguments core.CommandArguments) ([]string, error) {
-	question, err := s.getRandQuestion(arguments)
+	question, site, err := s.getRandQuestion(arguments)
 	if err != nil {
 		if err.Error() == errInvalidTags || strings.Contains(err.Error(), errInvalidSite) {
 			return []string{err.Error()}, nil
@@ -87,15 +89,26 @@ func (s *stackexchange) seTitle(arguments core.CommandArguments) ([]string, erro
 		return nil, err
 	}
 
-	s.lastLink = question.Link
+	if site == "stackoverflow" {
+		s.lastSOLink = question.Link
+	} else {
+		s.lastSELink = question.Link
+	}
 	return []string{html.UnescapeString(question.Title)}, err
 }
 
-func (s *stackexchange) seLastLink(arguments core.CommandArguments) ([]string, error) {
-	if s.lastLink == "" {
+func (s *stackexchange) seLastSOLink(arguments core.CommandArguments) ([]string, error) {
+	if s.lastSOLink == "" {
+		return []string{"https://stackoverflow.com"}, nil
+	}
+	return []string{s.lastSOLink}, nil
+}
+
+func (s *stackexchange) seLastSELink(arguments core.CommandArguments) ([]string, error) {
+	if s.lastSELink == "" {
 		return []string{"https://stackexchange.com"}, nil
 	}
-	return []string{s.lastLink}, nil
+	return []string{s.lastSELink}, nil
 }
 
 func (s *stackexchange) seStackOverflow(arguments core.CommandArguments) ([]string, error) {
