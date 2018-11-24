@@ -1,14 +1,16 @@
 package stackexchange
 
 import (
-	"github.com/laktek/Stack-on-Go/stackongo"
+	"github.com/ShikiCanKillServants/Stack-on-Go/stackongo"
 	"github.com/lovelaced/glitzz/config"
 	"github.com/lovelaced/glitzz/core"
 
 	"errors"
 	"html"
 	"math/rand"
+	"net/http"
 	"strings"
+	"time"
 )
 
 const (
@@ -52,6 +54,10 @@ func (s *stackexchange) getRandQuestion(arguments core.CommandArguments) (*stack
 	site := s.getSite(arguments)
 	tags := s.getTags(arguments)
 
+	netClient := http.Client{
+		Timeout: time.Second * 10,
+	}
+	stackongo.SetHTTPClient(netClient)
 	session := stackongo.NewSession(site)
 	params := make(stackongo.Params)
 	params.Add("sort", "creation")
