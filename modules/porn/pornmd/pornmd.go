@@ -52,7 +52,7 @@ func ReturnRandSearch() ([]string, error) {
 	case "g":
 		genre = "Gay"
 	case "t":
-		genre = "Trap"
+		genre = "Trans"
 	case "s":
 		genre = "Straight"
 	default:
