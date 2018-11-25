@@ -71,6 +71,7 @@ func Default() Config {
 			"info",
 			"links",
 			"pipes",
+			"porn",
 			"quotes",
 			"reactions",
 			"reddit",

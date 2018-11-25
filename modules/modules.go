@@ -12,6 +12,7 @@ import (
 	"github.com/lovelaced/glitzz/modules/info"
 	"github.com/lovelaced/glitzz/modules/links"
 	"github.com/lovelaced/glitzz/modules/pipes"
+	"github.com/lovelaced/glitzz/modules/porn"
 	"github.com/lovelaced/glitzz/modules/quotes"
 	"github.com/lovelaced/glitzz/modules/reactions"
 	"github.com/lovelaced/glitzz/modules/reddit"
@@ -61,6 +62,7 @@ func getModuleConstructors() map[string]moduleConstructor {
 		"info":          info.New,
 		"links":         links.New,
 		"pipes":         pipes.New,
+		"porn":          porn.New,
 		"quotes":        quotes.New,
 		"reactions":     reactions.New,
 		"reddit":        reddit.New,
