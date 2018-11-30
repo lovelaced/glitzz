@@ -229,8 +229,8 @@ type reactions struct {
 	core.Base
 }
 
-func (p *reactions) reminders(arguments core.CommandArguments) ([]string, error) {
-	return reminders, nil
+func (p *reactions) reminder(arguments core.CommandArguments) ([]string, error) {
+	return reminder, nil
 }
 
 func (p *reactions) dmx(arguments core.CommandArguments) ([]string, error) {
