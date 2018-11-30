@@ -10,16 +10,16 @@ import (
 )
 
 var dmx = []string{
-	"ARF ARF NIGGA",
-	"*DOG NOISES*",
-	"DOIN BAD SHIT",
-	"STOP... DROP.... SHUT EM DOWN OPEN UP SHOP",
-	"THATS THE WAY RUFF RYDERS ROLL",
-	"WHOA, YOU KNOW",
+        "ARF ARF NIGGA",
+        "*DOG NOISES*",
+        "DOIN BAD SHIT",
+        "STOP... DROP.... SHUT EM DOWN OPEN UP SHOP",
+        "THATS THE WAY RUFF RYDERS ROLL",
+        "WHOA, YOU KNOW",
 }
 
 var deeznuts = []string{
-	"GOT EEEEEEM",
+        "GOT EEEEEEM",
 }
 
 var cutelist = []string{
