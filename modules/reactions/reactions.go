@@ -11,7 +11,7 @@ import (
 
 
 var reminder = []string{
-	"Reminder to sit up straight and drink water! Get some fresh air as well, use them legs! :)"
+	"Reminder to sit up straight and drink water! Get some fresh air as well, use them legs! :)",
 }
 
 
