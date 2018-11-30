@@ -216,11 +216,11 @@ type reactions struct {
 	core.Base
 }
 
-func (p *reactions) dmx(arguments core.CommandArguments) ([]string, error {
+func (p *reactions) dmx(arguments core.CommandArguments) ([]string, error) {
 	return dmx, nil
 }
 
-func (p *reactions) deeznuts(arguments core.CommandArguments) ([]string, error {
+func (p *reactions) deeznuts(arguments core.CommandArguments) ([]string, error) {
 	return deeznuts, nil
 }
 
