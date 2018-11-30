@@ -230,7 +230,7 @@ func (p *reactions) dmx(arguments core.CommandArguments) ([]string, error) {
 		}
 		return []string{text}, nil
 	} else {
-		return nil errors.New("No argument given, busta!")
+		return nil, errors.New("No argument given, busta!")
 	}
 }
 
