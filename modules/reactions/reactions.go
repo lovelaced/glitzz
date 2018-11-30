@@ -97,7 +97,7 @@ var rnh = []string{
 }
 
 var ernh = []string{
-	" --- END REAL NIGGA HOURS ---",
+	"--- END REAL NIGGA HOURS ---",
 }
 
 var stumplist = []string{
@@ -207,11 +207,21 @@ func New(sender core.Sender, conf config.Config) (core.Module, error) {
 	rv.AddCommand("rnh", rv.rnh)
 	rv.AddCommand("ernh", rv.ernh)
 	rv.AddCommand("int", rv.intensifies)
+	rv.AddCommand("dmx", rv.dmx)
+	rv.AddCommand("deeznuts", rv.deeznuts)
 	return rv, nil
 }
 
 type reactions struct {
 	core.Base
+}
+
+func (p *reactions) dmx(arguments core.CommandArguments) ([]string, error) {
+	return dmx, nil
+}
+
+func (p *reactions) deeznuts(arguments core.CommandArguments) ([]string, error) {
+	return deeznuts, nil
 }
 
 func (p *reactions) denko(arguments core.CommandArguments) ([]string, error) {
