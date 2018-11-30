@@ -9,6 +9,12 @@ import (
 	"unicode"
 )
 
+
+var reminder = []string{
+	"Reminder to sit up straight and drink water! Get some fresh air as well, use them legs! :)"
+}
+
+
 var dmxlist = []string{
 	"ARF ARF NIGGA",
 	"*DOG NOISES*",
@@ -215,11 +221,16 @@ func New(sender core.Sender, conf config.Config) (core.Module, error) {
 	rv.AddCommand("int", rv.intensifies)
 	rv.AddCommand("dmx", rv.dmx)
 	rv.AddCommand("deeznuts", rv.deeznuts)
+	rv.AddCommand("reminder", rv.reminder)
 	return rv, nil
 }
 
 type reactions struct {
 	core.Base
+}
+
+func (p *reactions) reminders(arguments core.CommandArguments) ([]string, error) {
+	return reminders, nil
 }
 
 func (p *reactions) dmx(arguments core.CommandArguments) ([]string, error) {
@@ -386,3 +397,7 @@ func rRandEle(texts []string, arguments core.CommandArguments) (string, error) {
 	text = strings.Replace(text, "{sender}", arguments.Nick, -1)
 	return text, nil
 }
+
+
+
+
