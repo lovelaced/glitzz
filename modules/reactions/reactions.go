@@ -224,7 +224,7 @@ type reactions struct {
 
 func (p *reactions) dmx(arguments core.CommandArguments) ([]string, error) {
 	if len(arguments.Arguments) > 0 {
-		text, err := rRandEle(dmx, arguments)
+		text, err := rRandEle(dmxlist, arguments)
 		if err != nil {
 			return nil, err
 		}
