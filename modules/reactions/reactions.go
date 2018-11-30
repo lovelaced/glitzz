@@ -9,6 +9,19 @@ import (
 	"unicode"
 )
 
+var dmx = []string{
+	"ARF ARF NIGGA",
+	"*DOG NOISES*",
+	"DOIN BAD SHIT",
+	"STOP... DROP.... SHUT EM DOWN OPEN UP SHOP",
+	"THATS THE WAY RUFF RYDERS ROLL",
+	"WHOA, YOU KNOW",
+}
+
+var deeznuts = []string{
+	"GOT EEEEEEM",
+}
+
 var cutelist = []string{
 	"✿◕ ‿ ◕✿",
 	"❀◕ ‿ ◕❀",
@@ -84,7 +97,7 @@ var rnh = []string{
 }
 
 var ernh = []string{
-	" --- END REAL NIGGA HOURS ---",
+	"--- END REAL NIGGA HOURS ---",
 }
 
 var stumplist = []string{
