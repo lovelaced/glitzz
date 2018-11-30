@@ -93,6 +93,7 @@ func cleanupTitle(title string) string {
 }
 
 func formatResponse(link string) string {
+	link = strings.Replace(link, "\n", "", -1)
 	return fmt.Sprintf("[ %s ]", link)
 }
 
