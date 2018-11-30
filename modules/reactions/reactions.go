@@ -9,13 +9,19 @@ import (
 	"unicode"
 )
 
-var dmx = []string{
+var dmxlist = []string{
 	"ARF ARF NIGGA",
 	"*DOG NOISES*",
 	"DOIN BAD SHIT",
 	"STOP... DROP.... SHUT EM DOWN OPEN UP SHOP",
 	"THATS THE WAY RUFF RYDERS ROLL",
 	"WHOA, YOU KNOW",
+	"MIND YO' BUSINESS LADY",
+	"ALL I KNOW IS PAIN",
+	"ALL I FEEL IS RAGE",
+	"YA'LL GON' MAKE ME LOSE MY MIND",
+	"YA'LL GON' MAKE ME ACT A FOOL",
+	"YA'LL GON' MAKE ME LOSE MY COOL",
 }
 
 var deeznuts = []string{
@@ -217,7 +223,15 @@ type reactions struct {
 }
 
 func (p *reactions) dmx(arguments core.CommandArguments) ([]string, error) {
-	return dmx, nil
+	if len(arguments.Arguments) > 0 {
+		text, err := rRandEle(dmx, arguments)
+		if err != nil {
+			return nil, err
+		}
+		return []string{text}, nil
+	} else {
+		return nil errors.New("No argument given, busta!")
+	}
 }
 
 func (p *reactions) deeznuts(arguments core.CommandArguments) ([]string, error) {
