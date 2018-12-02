@@ -9,6 +9,31 @@ import (
 	"unicode"
 )
 
+
+var reminder = []string{
+	"Reminder to sit up straight and drink water! Get some fresh air as well, use them legs! :)",
+}
+
+
+var dmxlist = []string{
+	"ARF ARF NIGGA",
+	"*DOG NOISES*",
+	"DOIN BAD SHIT",
+	"STOP... DROP.... SHUT EM DOWN OPEN UP SHOP",
+	"THATS THE WAY RUFF RYDERS ROLL",
+	"WHOA, YOU KNOW",
+	"MIND YO' BUSINESS LADY",
+	"ALL I KNOW IS PAIN",
+	"ALL I FEEL IS RAGE",
+	"YA'LL GON' MAKE ME LOSE MY MIND",
+	"YA'LL GON' MAKE ME ACT A FOOL",
+	"YA'LL GON' MAKE ME LOSE MY COOL",
+}
+
+var deeznuts = []string{
+	"GOT EEEEEEM",
+}
+
 var cutelist = []string{
 	"✿◕ ‿ ◕✿",
 	"❀◕ ‿ ◕❀",
@@ -84,7 +109,7 @@ var rnh = []string{
 }
 
 var ernh = []string{
-	" --- END REAL NIGGA HOURS ---",
+	"--- END REAL NIGGA HOURS ---",
 }
 
 var stumplist = []string{
@@ -194,11 +219,34 @@ func New(sender core.Sender, conf config.Config) (core.Module, error) {
 	rv.AddCommand("rnh", rv.rnh)
 	rv.AddCommand("ernh", rv.ernh)
 	rv.AddCommand("int", rv.intensifies)
+	rv.AddCommand("dmx", rv.dmx)
+	rv.AddCommand("deeznuts", rv.deeznuts)
+	rv.AddCommand("reminder", rv.reminder)
 	return rv, nil
 }
 
 type reactions struct {
 	core.Base
+}
+
+func (p *reactions) reminder(arguments core.CommandArguments) ([]string, error) {
+	return reminder, nil
+}
+
+func (p *reactions) dmx(arguments core.CommandArguments) ([]string, error) {
+	if len(arguments.Arguments) > 0 {
+		text, err := rRandEle(dmxlist, arguments)
+		if err != nil {
+			return nil, err
+		}
+		return []string{text}, nil
+	} else {
+		return nil, errors.New("No argument given, busta!")
+	}
+}
+
+func (p *reactions) deeznuts(arguments core.CommandArguments) ([]string, error) {
+	return deeznuts, nil
 }
 
 func (p *reactions) denko(arguments core.CommandArguments) ([]string, error) {
@@ -349,3 +397,7 @@ func rRandEle(texts []string, arguments core.CommandArguments) (string, error) {
 	text = strings.Replace(text, "{sender}", arguments.Nick, -1)
 	return text, nil
 }
+
+
+
+
