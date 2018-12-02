@@ -247,8 +247,6 @@ func (p *reactions) dmx(arguments core.CommandArguments) ([]string, error) {
 		}
 		return []string{text}, nil
 	}
-
-
 }
 
 func (p *reactions) deeznuts(arguments core.CommandArguments) ([]string, error) {
