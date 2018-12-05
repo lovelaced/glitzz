@@ -138,3 +138,11 @@ func TestLinksTooLong(t *testing.T) {
 		t.Fatalf("reply too long: %d - %s", len(senderMock.Replies[0].Text), senderMock.Replies[0].Text)
 	}
 }
+
+func TestCleanupTitle(t *testing.T) {
+	text := "\n  a    b      \r\n   c \n"
+	result := cleanupTitle(text)
+	if result != "a b c" {
+		t.Fatalf("invalid result: %s", result)
+	}
+}
