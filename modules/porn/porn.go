@@ -14,7 +14,7 @@ func New(sender core.Sender, conf config.Config) (core.Module, error) {
 	}
 
 	rv.AddCommand("pornmd", rv.pornMD)
-	rv.AddCommand("porn", rv.pornMD)
+	rv.AddCommand("porn", rv.pornHubTitle)
 	rv.AddCommand("porntitle", rv.pornHubTitle)
 	rv.AddCommand("pornlast", rv.pornHubLast)
 	return rv, nil
@@ -30,8 +30,14 @@ func (p *porn) pornMD(arguments core.CommandArguments) ([]string, error) {
 }
 
 func (p *porn) pornHubTitle(arguments core.CommandArguments) ([]string, error) {
-	p.hub.GetPage()
-	p.hub.SetTitle()
+	err := p.hub.GetPage()
+	if err != nil {
+		return nil, err
+	}
+	err = p.hub.SetTitle()
+	if err != nil {
+		return nil, err
+	}
 	return []string{p.hub.Title}, nil
 }
 

@@ -14,9 +14,11 @@ const (
 	pornhubURL    = "https://www.pornhub.com"
 	pornhubVidFMT = pornhubURL + "/view_video.php?viewkey="
 	//userAgent  = "Mozilla/5.0 (X11; Linux x86_64; rv:63.0) Gecko/20100101 Firefox/63.0"
-	//userAgent = "glitzz, a cute irc bot written in go"
-	userAgent = "IRC bot"
+	userAgent = "glitzz, a cute irc bot written in go"
 )
+
+// Random video URL path, global variable to facilitate testing
+var vidURL = pornhubURL + "/random"
 
 // Pornhub structure, this is where the magic happens
 type Pornhub struct {
@@ -61,7 +63,7 @@ func (p *Pornhub) getLinkURL(body []byte) (err error) {
 func (p *Pornhub) GetPage() (err error) {
 	client := &http.Client{Timeout: 10 * time.Second}
 
-	request, err := http.NewRequest("GET", pornhubURL+"/random", nil)
+	request, err := http.NewRequest("GET", vidURL, nil)
 	if err != nil {
 		return
 	}
@@ -110,8 +112,6 @@ func (p *Pornhub) SetTitle() (err error) {
 	}
 	f(doc)
 
-	println(p.Title)
-
 	if p.Title == "" {
 		return fmt.Errorf("Title not found")
 	}
@@ -120,5 +120,6 @@ func (p *Pornhub) SetTitle() (err error) {
 
 // GetRandComment returns a random pornhub comment
 func GetRandComment() ([]string, error) {
+	// GO's HTML PARSER IS FUCKING BROKEN SO I'M NOT DOING THIS ANY TIME SOON
 	return nil, nil
 }
