@@ -241,7 +241,11 @@ func (p *reactions) dmx(arguments core.CommandArguments) ([]string, error) {
 		}
 		return []string{text}, nil
 	} else {
-		return nil, errors.New("No argument given, busta!")
+		text, err := util.GetRandomArrayElement(dmxlist)
+		if err != nil {
+			return nil, err
+		}
+		return []string{text}, nil
 	}
 }
 
