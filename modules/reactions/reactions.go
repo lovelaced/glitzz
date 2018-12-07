@@ -9,10 +9,9 @@ import (
 	"unicode"
 )
 
-<<<<<<< HEAD
 var biffisms = []string{
 	"r00t666",
-	"BIFF@BIT.NET", 
+	"BIFF@BIT.NET",
 	"BIFF@PSUVM.PSU.EDU",
 	"BIFF@BIFFVM.BIT.NET",
 	"BIFF+@ANDREW.CMU.EDU",
