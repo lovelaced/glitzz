@@ -9,6 +9,7 @@ import (
 	"unicode"
 )
 
+<<<<<<< HEAD
 var biffisms = []string{
 	"r00t666",
 	"BIFF@BIT.NET", 
