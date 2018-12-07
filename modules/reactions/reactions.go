@@ -9,11 +9,37 @@ import (
 	"unicode"
 )
 
-
-var reminder = []string{
-	"Reminder to sit up straight and drink water! Get some fresh air as well, use them legs! :)",
+var biffisms = []string{
+	"r00t666",
+	"BIFF@BIT.NET", 
+	"BIFF@PSUVM.PSU.EDU",
+	"BIFF@BIFFVM.BIT.NET",
+	"BIFF+@ANDREW.CMU.EDU",
+	"B1FF@AOL.COM",
+	"B1FF@DELPHI.COM",
+	"B1FF@PRODIGY.COM",
+	"B1FF@COMU$ERVE.COM",
+	"B1FF@NETCOM.COM",
+	"B1FF@WORLD.STD.COM",
+	"B1FF@MCS.COM",
+	"B1FF@B1FFNET.FIDONET.ORG",
+	"B1FF@WELL.SF.CA.US",
+	"B1FF@ATHENA.MIT.EDU",
+	"B1FF@CYBER.SELL.COM",
+	"BIFF@MSN.COM",
+	"BIFF|@|AOL.DELPHI.PRODIGY.COMPU$ERVE.NETCOM.WORLD.MSN.B1FF.EDU DUDE!>",
+	"BANG THE FALSE METAL HEAD THAT DUZZNT DRINK BEER!!!",
+	"HOT METAL TUBS RULE IN A MAJOR WAY DUDEZ!!!!",
+	"K0M1NG S00N T0 THEATREZ NEER U!!!!!! B1FF TR3K FEETURING THE GRATE B1FFIN5K1 AS C4PTA1N B1FF!!!!!!!",
+	"THE RO4D T0 B1FFN3SS!!!! ALL MUST TR4V3L 1T B1FF R00LZ!! SUMD4Y!!!!!!!!!",
+"B1FF 4RUOND TH4 W3RLD!!!!!
+                                   .
+                               _--_|\
+                     P3RTH--> /      \\<--SIND3Y
+                             \\_.--._/
+                                    v<---B1FFSM4NIA!!!!!!!",
+	"B1FFPAG3:: http://web.archive.org/web/20041204042147/www.panix.com/~clays/biff/"
 }
-
 
 var dmxlist = []string{
 	"ARF ARF NIGGA",
@@ -221,7 +247,7 @@ func New(sender core.Sender, conf config.Config) (core.Module, error) {
 	rv.AddCommand("int", rv.intensifies)
 	rv.AddCommand("dmx", rv.dmx)
 	rv.AddCommand("deeznuts", rv.deeznuts)
-	rv.AddCommand("reminder", rv.reminder)
+	rv.AddCommand("biff", rv.biff)
 	return rv, nil
 }
 
@@ -229,8 +255,20 @@ type reactions struct {
 	core.Base
 }
 
-func (p *reactions) reminder(arguments core.CommandArguments) ([]string, error) {
-	return reminder, nil
+func (p *reactions) biff(arguments core.CommandArguments) ([]string, error) {
+	if len(arguments.Arguments) > 0 {
+		text, err := rRandEle(biffisms, arguments)
+		if err != nil {
+			return nil, err
+		}
+		return []string{text}, nil
+	} else {
+		text, err := util.GetRandomArrayElement(biffisms)
+		if err != nil {
+			return nil, err
+		}
+		return []string{text}, nil
+	}
 }
 
 func (p *reactions) dmx(arguments core.CommandArguments) ([]string, error) {
