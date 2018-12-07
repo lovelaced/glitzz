@@ -9,11 +9,9 @@ import (
 	"unicode"
 )
 
-
 var reminder = []string{
 	"Reminder to sit up straight and drink water! Get some fresh air as well, use them legs! :)",
 }
-
 
 var dmxlist = []string{
 	"ARF ARF NIGGA",
@@ -28,6 +26,33 @@ var dmxlist = []string{
 	"YA'LL GON' MAKE ME LOSE MY MIND",
 	"YA'LL GON' MAKE ME ACT A FOOL",
 	"YA'LL GON' MAKE ME LOSE MY COOL",
+}
+
+var rewrite = "Rewrite it in "
+
+var progLanguageList = []string{
+	"Visual Basic",
+	"javascript",
+	"brainfuck",
+	"FORTRAN",
+	"haskell",
+	"python",
+	"erlang",
+	"PASCAL",
+	"COBOL",
+	"BASIC",
+	"forth",
+	"swift",
+	"scala",
+	"rust",
+	"perl",
+	"java",
+	"ruby",
+	"PHP",
+	"lua",
+	"ASM",
+	"Go",
+	"C",
 }
 
 var deeznuts = []string{
@@ -221,6 +246,7 @@ func New(sender core.Sender, conf config.Config) (core.Module, error) {
 	rv.AddCommand("int", rv.intensifies)
 	rv.AddCommand("dmx", rv.dmx)
 	rv.AddCommand("deeznuts", rv.deeznuts)
+	rv.AddCommand("rewrite", rv.rewrite)
 	rv.AddCommand("reminder", rv.reminder)
 	return rv, nil
 }
@@ -231,6 +257,14 @@ type reactions struct {
 
 func (p *reactions) reminder(arguments core.CommandArguments) ([]string, error) {
 	return reminder, nil
+}
+
+func (p *reactions) rewrite(arguments core.CommandArguments) ([]string, error) {
+	progLang, err := util.GetRandomArrayElement(progLanguageList)
+	if err != nil {
+		return nil, err
+	}
+	return []string{rewrite + progLang}, nil
 }
 
 func (p *reactions) dmx(arguments core.CommandArguments) ([]string, error) {
@@ -401,7 +435,3 @@ func rRandEle(texts []string, arguments core.CommandArguments) (string, error) {
 	text = strings.Replace(text, "{sender}", arguments.Nick, -1)
 	return text, nil
 }
-
-
-
-
