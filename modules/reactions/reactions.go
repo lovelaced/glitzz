@@ -33,12 +33,6 @@ var biffisms = []string{
 	"HOT METAL TUBS RULE IN A MAJOR WAY DUDEZ!!!!",
 	"K0M1NG S00N T0 THEATREZ NEER U!!!!!! B1FF TR3K FEETURING THE GRATE B1FFIN5K1 AS C4PTA1N B1FF!!!!!!!",
 	"THE RO4D T0 B1FFN3SS!!!! ALL MUST TR4V3L 1T B1FF R00LZ!! SUMD4Y!!!!!!!!!",
-"B1FF 4RUOND TH4 W3RLD!!!!!
-                                   .
-                               _--_|\
-                     P3RTH--> /      \\<--SIND3Y
-                             \\_.--._/
-                                    v<---B1FFSM4NIA!!!!!!!",
 	"B1FFPAG3:: http://web.archive.org/web/20041204042147/www.panix.com/~clays/biff/"
 }
 
