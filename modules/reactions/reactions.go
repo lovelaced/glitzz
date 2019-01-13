@@ -222,6 +222,7 @@ func New(sender core.Sender, conf config.Config) (core.Module, error) {
 	rv.AddCommand("dmx", rv.dmx)
 	rv.AddCommand("deeznuts", rv.deeznuts)
 	rv.AddCommand("reminder", rv.reminder)
+	rv.AddCommand("checkem", rv.checkem)
 	return rv, nil
 }
 
@@ -295,6 +296,11 @@ func (p *reactions) magic(arguments core.CommandArguments) ([]string, error) {
 	} else {
 		return nil, errors.New("no arguments given")
 	}
+}
+
+func (p *reactions) checkem(arguments core.CommandArguments) ([]string, error) {
+	dubs := fmt.Sprintf("%02d",rand.Intn(100))
+	return []string{dubs}, errors.New("no arguments given")
 }
 
 func (p *reactions) intensifies(arguments core.CommandArguments) ([]string, error) {
