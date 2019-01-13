@@ -302,7 +302,7 @@ func (p *reactions) magic(arguments core.CommandArguments) ([]string, error) {
 
 func (p *reactions) checkem(arguments core.CommandArguments) ([]string, error) {
 	dubs := fmt.Sprintf("%02d",rand.Intn(100))
-	return []string{dubs}, errors.New("no arguments given")
+	return []string{dubs}, nil
 }
 
 func (p *reactions) intensifies(arguments core.CommandArguments) ([]string, error) {
