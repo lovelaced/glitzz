@@ -5,6 +5,8 @@ import (
 	"github.com/lovelaced/glitzz/config"
 	"github.com/lovelaced/glitzz/core"
 	"github.com/lovelaced/glitzz/util"
+	"fmt"
+	"rand"
 	"strings"
 	"unicode"
 )
