@@ -6,7 +6,7 @@ import (
 	"github.com/lovelaced/glitzz/core"
 	"github.com/lovelaced/glitzz/util"
 	"fmt"
-	"crypto/rand"
+	"math/rand"
 	"strings"
 	"unicode"
 )
