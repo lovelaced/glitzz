@@ -8,6 +8,7 @@ import (
 	"github.com/thoj/go-ircevent"
 	"golang.org/x/net/html"
 	"net/http"
+	"net/url"
 	"regexp"
 	"strings"
 	"time"
@@ -53,11 +54,6 @@ func (l *links) processLink(link string, e *irc.Event) {
 		l.Log.Debug("error getting link title", "link", link, "err", err)
 		return
 	}
-	title = cleanupTitle(title)
-	if len(title) > characterLimit {
-		title = title[:characterLimit-3]
-		title += "..."
-	}
 	text := formatResponse(title)
 	l.Sender.Reply(e, text)
 }
@@ -82,7 +78,23 @@ func (l *links) getLinkTitle(link string) (string, error) {
 	if err != nil {
 		return "", errors.Wrap(err, "could not find the title")
 	}
-	return title, nil
+	title = cleanupTitle(title)
+
+	// Hostname-specific title rendering
+	u, err := url.Parse(link)
+	if err != nil {
+		return "", errors.Wrap(err, "could not parse url, blame jarboot.")
+	}
+	switch u.Hostname() {
+	case "twitter.com":
+		return title, nil
+	default:
+		if len(title) > characterLimit {
+			title = title[:characterLimit-3]
+			title += "..."
+		}
+		return title, nil
+	}
 }
 
 func cleanupTitle(title string) string {
