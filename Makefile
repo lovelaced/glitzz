@@ -1,6 +1,6 @@
-all: dependencies test build
+all: dependencies test build check-gofmt
 
-ci: dependencies test-ci build
+ci: dependencies test-ci build check-gofmt
 
 build:
 	mkdir -p build
@@ -19,6 +19,9 @@ test:
 test-ci:
 	go test -coverprofile=coverage.txt -covermode=atomic ./...
 
+check-gofmt:
+	 ./.travis.gofmt.sh
+
 test-verbose:
 	go test -v ./...
 
@@ -31,4 +34,4 @@ clean:
 dependencies:
 	go get -t ./...
 
-.PHONY: all ci build run doc test test-ci test-verbose test-short clean dependencies
+.PHONY: all ci build run doc test test-ci test-verbose test-short clean dependencies check-gofmt
