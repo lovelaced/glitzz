@@ -2,14 +2,15 @@ package reminders
 
 import (
 	"fmt"
-	"github.com/lovelaced/glitzz/config"
-	"github.com/lovelaced/glitzz/core"
-	"github.com/lovelaced/glitzz/util"
-	"github.com/pkg/errors"
 	"regexp"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/lovelaced/glitzz/config"
+	"github.com/lovelaced/glitzz/core"
+	"github.com/lovelaced/glitzz/util"
+	"github.com/pkg/errors"
 )
 
 func New(sender core.Sender, conf config.Config) (core.Module, error) {
@@ -87,12 +88,13 @@ func formatReminder(rmd reminder) string {
 }
 
 var unitDurations = map[time.Duration][]string{
-	time.Second:          []string{"s", "sec", "second", "seconds"},
-	time.Minute:          []string{"m", "min", "minute", "minutes"},
-	time.Hour:            []string{"h", "hour", "hours"},
+	time.Second:          []string{"s", "sec", "secs", "second", "seconds"},
+	time.Minute:          []string{"m", "min", "mins", "minute", "minutes"},
+	time.Hour:            []string{"h", "hr", "hrs", "hour", "hours"},
 	24 * time.Hour:       []string{"d", "day", "days"},
 	7 * 24 * time.Hour:   []string{"w", "week", "weeks"},
-	365 * 24 * time.Hour: []string{"y", "year", "years"},
+	30 * 24 * time.Hour:  []string{"mon", "month", "months"},
+	365 * 24 * time.Hour: []string{"y", "yr", "yrs", "year", "years"},
 }
 
 func getUnitDuration(u string) (time.Duration, error) {
