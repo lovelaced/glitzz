@@ -2,39 +2,15 @@ package reactions
 
 import (
 	"errors"
-	"github.com/lovelaced/glitzz/config"
-	"github.com/lovelaced/glitzz/core"
-	"github.com/lovelaced/glitzz/util"
 	"fmt"
 	"math/rand"
 	"strings"
 	"unicode"
+
+	"github.com/lovelaced/glitzz/config"
+	"github.com/lovelaced/glitzz/core"
+	"github.com/lovelaced/glitzz/util"
 )
-
-
-var reminder = []string{
-	"Reminder to sit up straight and drink water! Get some fresh air as well, use them legs! :)",
-}
-
-
-var dmxlist = []string{
-	"ARF ARF NIGGA",
-	"*DOG NOISES*",
-	"DOIN BAD SHIT",
-	"STOP... DROP.... SHUT EM DOWN OPEN UP SHOP",
-	"THATS THE WAY RUFF RYDERS ROLL",
-	"WHOA, YOU KNOW",
-	"MIND YO' BUSINESS LADY",
-	"ALL I KNOW IS PAIN",
-	"ALL I FEEL IS RAGE",
-	"YA'LL GON' MAKE ME LOSE MY MIND",
-	"YA'LL GON' MAKE ME ACT A FOOL",
-	"YA'LL GON' MAKE ME LOSE MY COOL",
-}
-
-var deeznuts = []string{
-	"GOT EEEEEEM",
-}
 
 var cutelist = []string{
 	"✿◕ ‿ ◕✿",
@@ -96,22 +72,6 @@ var magiclist = []string{
 	"╰( ´・ω・)つ──☆ﾟ.*･｡ﾟ҉̛ {target}",
 	"╰( ´・ω・)つ──☆✿✿✿✿✿✿ {target}",
 	"(○´･∀･)o<･。:*ﾟ;+． {target}",
-}
-
-var denko = []string{
-	"(´･ω･`)",
-}
-
-var shrug = []string{
-	"¯\\_(ツ)_/¯",
-}
-
-var rnh = []string{
-	"--- REAL NIGGA HOURS ---",
-}
-
-var ernh = []string{
-	"--- END REAL NIGGA HOURS ---",
 }
 
 var stumplist = []string{
@@ -216,60 +176,13 @@ func New(sender core.Sender, conf config.Config) (core.Module, error) {
 	rv.AddCommand("magic", rv.magic)
 	rv.AddCommand("stump", rv.stump)
 	rv.AddCommand("spurd", rv.spurd)
-	rv.AddCommand("denko", rv.denko)
-	rv.AddCommand("shrug", rv.shrug)
-	rv.AddCommand("rnh", rv.rnh)
-	rv.AddCommand("ernh", rv.ernh)
 	rv.AddCommand("int", rv.intensifies)
-	rv.AddCommand("dmx", rv.dmx)
-	rv.AddCommand("deeznuts", rv.deeznuts)
-	rv.AddCommand("reminder", rv.reminder)
 	rv.AddCommand("checkem", rv.checkem)
 	return rv, nil
 }
 
 type reactions struct {
 	core.Base
-}
-
-func (p *reactions) reminder(arguments core.CommandArguments) ([]string, error) {
-	return reminder, nil
-}
-
-func (p *reactions) dmx(arguments core.CommandArguments) ([]string, error) {
-	if len(arguments.Arguments) > 0 {
-		text, err := rRandEle(dmxlist, arguments)
-		if err != nil {
-			return nil, err
-		}
-		return []string{text}, nil
-	} else {
-		text, err := util.GetRandomArrayElement(dmxlist)
-		if err != nil {
-			return nil, err
-		}
-		return []string{text}, nil
-	}
-}
-
-func (p *reactions) deeznuts(arguments core.CommandArguments) ([]string, error) {
-	return deeznuts, nil
-}
-
-func (p *reactions) denko(arguments core.CommandArguments) ([]string, error) {
-	return denko, nil
-}
-
-func (p *reactions) rnh(arguments core.CommandArguments) ([]string, error) {
-	return rnh, nil
-}
-
-func (p *reactions) ernh(arguments core.CommandArguments) ([]string, error) {
-	return ernh, nil
-}
-
-func (p *reactions) shrug(arguments core.CommandArguments) ([]string, error) {
-	return shrug, nil
 }
 
 func (p *reactions) cute(arguments core.CommandArguments) ([]string, error) {
@@ -301,7 +214,7 @@ func (p *reactions) magic(arguments core.CommandArguments) ([]string, error) {
 }
 
 func (p *reactions) checkem(arguments core.CommandArguments) ([]string, error) {
-	dubs := fmt.Sprintf("%02d",rand.Intn(100))
+	dubs := fmt.Sprintf("%02d", rand.Intn(100))
 	return []string{dubs}, nil
 }
 
@@ -409,7 +322,3 @@ func rRandEle(texts []string, arguments core.CommandArguments) (string, error) {
 	text = strings.Replace(text, "{sender}", arguments.Nick, -1)
 	return text, nil
 }
-
-
-
-
