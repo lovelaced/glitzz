@@ -60,6 +60,11 @@ func (l *links) processLink(link string, e *irc.Event) {
 
 func (l *links) getLinkTitle(link string) (string, error) {
 	l.Log.Debug("getting link title", "link", link)
+	if strings.HasPrefix(link, "https://twitter.com") {
+		link = strings.Replace(link, "twitter.com", "nitter.net", 1)
+		l.Log.Debug("Rewrote twitter link", "link", link)
+	}
+
 	req, err := http.NewRequest(http.MethodGet, link, nil)
 	if err != nil {
 		return "", errors.Wrap(err, "could not create a request")
