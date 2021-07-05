@@ -134,6 +134,9 @@ func (r *reddit) getSubComments(arguments core.CommandArguments) error {
 func (r *reddit) getRandomComment(commentlist []*geddit.Comment) (*geddit.Comment, error) {
 	if len(commentlist) > 0 {
 		commentIndex := rand.Intn(len(commentlist))
+		if len(commentlist[commentIndex])>99{
+			return commentlist[commentIndex][:99], nil
+		}
 		return commentlist[commentIndex], nil
 	}
 	return nil, errors.New("Could not find a random post")
